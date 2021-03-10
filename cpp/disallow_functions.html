@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>禁止成员函数（disallow functions） | 程序员在深圳</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
+    <meta name="description" content="一个程序员的工作学习日志">
+    
+    <link rel="preload" href="/assets/css/0.styles.f5338f93.css" as="style"><link rel="preload" href="/assets/js/app.df58ad8f.js" as="script"><link rel="preload" href="/assets/js/2.61eaf15d.js" as="script"><link rel="preload" href="/assets/js/37.a3169296.js" as="script"><link rel="prefetch" href="/assets/js/10.f87ecc1f.js"><link rel="prefetch" href="/assets/js/11.54366349.js"><link rel="prefetch" href="/assets/js/12.67a0f6b0.js"><link rel="prefetch" href="/assets/js/13.99b5efa8.js"><link rel="prefetch" href="/assets/js/14.d6c4161c.js"><link rel="prefetch" href="/assets/js/15.86108684.js"><link rel="prefetch" href="/assets/js/16.010195ae.js"><link rel="prefetch" href="/assets/js/17.ce5baee3.js"><link rel="prefetch" href="/assets/js/18.aadd0b94.js"><link rel="prefetch" href="/assets/js/19.572b0672.js"><link rel="prefetch" href="/assets/js/20.b6be1672.js"><link rel="prefetch" href="/assets/js/21.cd98384f.js"><link rel="prefetch" href="/assets/js/22.102317c8.js"><link rel="prefetch" href="/assets/js/23.a0861652.js"><link rel="prefetch" href="/assets/js/24.bf902e0e.js"><link rel="prefetch" href="/assets/js/25.07e70736.js"><link rel="prefetch" href="/assets/js/26.3217ccfc.js"><link rel="prefetch" href="/assets/js/27.234cd32e.js"><link rel="prefetch" href="/assets/js/28.7c7054a6.js"><link rel="prefetch" href="/assets/js/29.f9081eeb.js"><link rel="prefetch" href="/assets/js/3.b3b53faa.js"><link rel="prefetch" href="/assets/js/30.8e61b67c.js"><link rel="prefetch" href="/assets/js/31.6c587718.js"><link rel="prefetch" href="/assets/js/32.dc610c44.js"><link rel="prefetch" href="/assets/js/33.dcbd6e39.js"><link rel="prefetch" href="/assets/js/34.ae1fd795.js"><link rel="prefetch" href="/assets/js/35.138d4346.js"><link rel="prefetch" href="/assets/js/36.d31f5a6a.js"><link rel="prefetch" href="/assets/js/38.aca3097a.js"><link rel="prefetch" href="/assets/js/39.c0de7ac0.js"><link rel="prefetch" href="/assets/js/4.e59358e7.js"><link rel="prefetch" href="/assets/js/40.5d68e63a.js"><link rel="prefetch" href="/assets/js/41.3dca7ff0.js"><link rel="prefetch" href="/assets/js/42.315116b4.js"><link rel="prefetch" href="/assets/js/43.cef3d9f5.js"><link rel="prefetch" href="/assets/js/44.88ac8ba1.js"><link rel="prefetch" href="/assets/js/45.73ffc9a4.js"><link rel="prefetch" href="/assets/js/46.04780877.js"><link rel="prefetch" href="/assets/js/47.f20a8844.js"><link rel="prefetch" href="/assets/js/48.e649e8cd.js"><link rel="prefetch" href="/assets/js/49.8a3b5784.js"><link rel="prefetch" href="/assets/js/5.1b393789.js"><link rel="prefetch" href="/assets/js/50.1a49c4ab.js"><link rel="prefetch" href="/assets/js/51.cbf7b21b.js"><link rel="prefetch" href="/assets/js/52.7788643e.js"><link rel="prefetch" href="/assets/js/53.e05e9f77.js"><link rel="prefetch" href="/assets/js/54.afd8b938.js"><link rel="prefetch" href="/assets/js/55.563d7429.js"><link rel="prefetch" href="/assets/js/56.b7fa3e85.js"><link rel="prefetch" href="/assets/js/57.f1a89935.js"><link rel="prefetch" href="/assets/js/58.15388447.js"><link rel="prefetch" href="/assets/js/59.372e5f15.js"><link rel="prefetch" href="/assets/js/6.b798fcf5.js"><link rel="prefetch" href="/assets/js/60.a488faa3.js"><link rel="prefetch" href="/assets/js/61.76dadce9.js"><link rel="prefetch" href="/assets/js/62.21c77b63.js"><link rel="prefetch" href="/assets/js/63.5e49c47d.js"><link rel="prefetch" href="/assets/js/64.453510d9.js"><link rel="prefetch" href="/assets/js/65.993d90cc.js"><link rel="prefetch" href="/assets/js/66.4cab5d50.js"><link rel="prefetch" href="/assets/js/67.868bf75e.js"><link rel="prefetch" href="/assets/js/68.89613fc8.js"><link rel="prefetch" href="/assets/js/69.779e7f70.js"><link rel="prefetch" href="/assets/js/7.cb2f8a10.js"><link rel="prefetch" href="/assets/js/70.6b66c1a9.js"><link rel="prefetch" href="/assets/js/71.9783ef6a.js"><link rel="prefetch" href="/assets/js/72.5e7137bc.js"><link rel="prefetch" href="/assets/js/73.9fcb00bc.js"><link rel="prefetch" href="/assets/js/74.3a440a9c.js"><link rel="prefetch" href="/assets/js/8.01f6304b.js"><link rel="prefetch" href="/assets/js/9.e15aa5e8.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.f5338f93.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">程序员在深圳</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/cpp/" class="nav-link router-link-active">
+  C++
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/AI/" class="nav-link">
+  AI
+</a></div><div class="nav-item"><a href="/math/" class="nav-link">
+  math
+</a></div><div class="nav-item"><a href="/mysql_notes/" class="nav-link">
+  mysql
+</a></div><div class="nav-item"><a href="/tools/" class="nav-link">
+  tools
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="LeetCode" class="dropdown-title"><span class="title">LeetCode</span> <span class="arrow down"></span></button> <button type="button" aria-label="LeetCode" class="mobile-dropdown-title"><span class="title">LeetCode</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/leetcode/" class="nav-link">
+  articles
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/jieniu/LeetCode.git" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MyLeeCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/jieniu/articles" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/cpp/" class="nav-link router-link-active">
+  C++
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/AI/" class="nav-link">
+  AI
+</a></div><div class="nav-item"><a href="/math/" class="nav-link">
+  math
+</a></div><div class="nav-item"><a href="/mysql_notes/" class="nav-link">
+  mysql
+</a></div><div class="nav-item"><a href="/tools/" class="nav-link">
+  tools
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="LeetCode" class="dropdown-title"><span class="title">LeetCode</span> <span class="arrow down"></span></button> <button type="button" aria-label="LeetCode" class="mobile-dropdown-title"><span class="title">LeetCode</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/leetcode/" class="nav-link">
+  articles
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/jieniu/LeetCode.git" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MyLeeCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/jieniu/articles" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="禁止成员函数-disallow-functions"><a href="#禁止成员函数-disallow-functions" class="header-anchor">#</a> 禁止成员函数（disallow functions）</h1> <p>本文将介绍禁止编译器自动生成某些函数的2种方法，及在某些场景下（例如嵌入式编程中），禁止析构函数给程序带来的好处。</p> <p>还记得如何禁止默认构造函数吗，即定义一个带参数的构造函数即可，如下面的代码将会编译失败</p> <div class="language- extra-class"><pre class="language-text"><code>class OpenFile {
+public:
+    // 定义一个带参构造函数
+	OpenFile(string filename) {/*...*/}
+};
+
+int main() {
+    OpenFile f; // error: no matching constructor for initialization of 'OpenFile'
+}
+</code></pre></div><p>除此之外，我们还可以显示的禁止某些函数的定义</p> <ol><li>在 C++ 03 中，我们可以将这些函数声明在 <code>private</code> 作用域中，且不定义它们</li> <li>在 C++ 11 中，提供了 <code>delete</code> 关键字来实现此功能</li></ol> <p>假设你有一个文件类 <code>OpenFile</code>，你不希望这类对象互相复制，因为这会把文件写乱，此时你可以禁止该类的复制构造函数和赋值操作符，在 C++ 03 中，你可以这样做</p> <div class="language- extra-class"><pre class="language-text"><code>class OpenFile {
+private:
+	OpenFile(OpenFile&amp; rhs);
+	OpenFile&amp; operator=(const OpenFile&amp; rhs);
+}；
+</code></pre></div><p>C++ 11中是这样的</p> <div class="language- extra-class"><pre class="language-text"><code>class OpenFile {
+public:
+	OpenFile(OpenFile&amp; rhs) = delete;
+	OpenFile&amp; operator=(const OpenFile&amp; rhs) = delete;
+}；
+</code></pre></div><p>在某些情况下，如果你不希望继承来自基类的函数，你也可以这样显示声明</p> <div class="language- extra-class"><pre class="language-text"><code>class Base {
+public:
+	void foo();
+};
+
+class Derived : public Base {
+public:
+	void foo() = delete; // 不继承 foo()
+};
+
+int main() {
+    Derived d;
+    d.foo(); // error: attempt to use a deleted function
+}
+</code></pre></div><p><strong>禁止析构函数</strong></p> <p>在嵌入式编程中，由于栈空间比较小的原因，我们会避开将一些大对象存储在栈中，而选择将他们存放在堆中，栈中对象的特点是：当对象离开局部空间（函数或程序块），存储在栈中的对象会自动释放，对象的析构函数会被调用，此时，如果我们将对象的析构函数定义在 <code>private</code> 域中，即禁止外部释放对象，就可以有效地保护对象不被存储在栈中。</p> <p>当然，存储在堆中的对象还是要提供销毁功能的，你可以额外定义一个「自定义的析构函数」，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>class BigBlock {
+public:
+	BigBlock();
+	void destroyMe() {delete this;}
+private:
+	~BigBlock() {/*...*/}
+};
+
+int main() {
+    BigBlock *b = new BigBlock();
+    b-&gt;destroyMe(); 
+}
+</code></pre></div><p>总结，本文主要介绍了以下内容</p> <ol><li>C++ 11: f() = delete; 使用 <code>delete</code> 关键字</li> <li>C++ 03: 将函数声明在 <code>private</code> 中，且不定义它</li> <li><code>private</code> 析构函数: stay out of stack.</li></ol> <p>参考：</p> <ul><li><a href="https://www.youtube.com/watch?v=EL30-a2gblQ&amp;t=0s&amp;list=PLE28375D4AC946CC3&amp;index=6" target="_blank" rel="noopener noreferrer">Advanced C++: Disallow Functions<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/jieniu/articles/edit/master/docs/cpp/disallow_functions.md" target="_blank" rel="noopener noreferrer">在 Github 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">上次更新:</span> <span class="time">6/16/2019, 11:09:03 AM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.df58ad8f.js" defer></script><script src="/assets/js/2.61eaf15d.js" defer></script><script src="/assets/js/37.a3169296.js" defer></script>
+  </body>
+</html>

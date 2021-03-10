@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>【学习笔记】Hands On Machine Learning - Chap3. Classification | 程序员在深圳</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
+    <meta name="description" content="一个程序员的工作学习日志">
+    
+    <link rel="preload" href="/assets/css/0.styles.f5338f93.css" as="style"><link rel="preload" href="/assets/js/app.df58ad8f.js" as="script"><link rel="preload" href="/assets/js/2.61eaf15d.js" as="script"><link rel="preload" href="/assets/js/20.b6be1672.js" as="script"><link rel="prefetch" href="/assets/js/10.f87ecc1f.js"><link rel="prefetch" href="/assets/js/11.54366349.js"><link rel="prefetch" href="/assets/js/12.67a0f6b0.js"><link rel="prefetch" href="/assets/js/13.99b5efa8.js"><link rel="prefetch" href="/assets/js/14.d6c4161c.js"><link rel="prefetch" href="/assets/js/15.86108684.js"><link rel="prefetch" href="/assets/js/16.010195ae.js"><link rel="prefetch" href="/assets/js/17.ce5baee3.js"><link rel="prefetch" href="/assets/js/18.aadd0b94.js"><link rel="prefetch" href="/assets/js/19.572b0672.js"><link rel="prefetch" href="/assets/js/21.cd98384f.js"><link rel="prefetch" href="/assets/js/22.102317c8.js"><link rel="prefetch" href="/assets/js/23.a0861652.js"><link rel="prefetch" href="/assets/js/24.bf902e0e.js"><link rel="prefetch" href="/assets/js/25.07e70736.js"><link rel="prefetch" href="/assets/js/26.3217ccfc.js"><link rel="prefetch" href="/assets/js/27.234cd32e.js"><link rel="prefetch" href="/assets/js/28.7c7054a6.js"><link rel="prefetch" href="/assets/js/29.f9081eeb.js"><link rel="prefetch" href="/assets/js/3.b3b53faa.js"><link rel="prefetch" href="/assets/js/30.8e61b67c.js"><link rel="prefetch" href="/assets/js/31.6c587718.js"><link rel="prefetch" href="/assets/js/32.dc610c44.js"><link rel="prefetch" href="/assets/js/33.dcbd6e39.js"><link rel="prefetch" href="/assets/js/34.ae1fd795.js"><link rel="prefetch" href="/assets/js/35.138d4346.js"><link rel="prefetch" href="/assets/js/36.d31f5a6a.js"><link rel="prefetch" href="/assets/js/37.a3169296.js"><link rel="prefetch" href="/assets/js/38.aca3097a.js"><link rel="prefetch" href="/assets/js/39.c0de7ac0.js"><link rel="prefetch" href="/assets/js/4.e59358e7.js"><link rel="prefetch" href="/assets/js/40.5d68e63a.js"><link rel="prefetch" href="/assets/js/41.3dca7ff0.js"><link rel="prefetch" href="/assets/js/42.315116b4.js"><link rel="prefetch" href="/assets/js/43.cef3d9f5.js"><link rel="prefetch" href="/assets/js/44.88ac8ba1.js"><link rel="prefetch" href="/assets/js/45.73ffc9a4.js"><link rel="prefetch" href="/assets/js/46.04780877.js"><link rel="prefetch" href="/assets/js/47.f20a8844.js"><link rel="prefetch" href="/assets/js/48.e649e8cd.js"><link rel="prefetch" href="/assets/js/49.8a3b5784.js"><link rel="prefetch" href="/assets/js/5.1b393789.js"><link rel="prefetch" href="/assets/js/50.1a49c4ab.js"><link rel="prefetch" href="/assets/js/51.cbf7b21b.js"><link rel="prefetch" href="/assets/js/52.7788643e.js"><link rel="prefetch" href="/assets/js/53.e05e9f77.js"><link rel="prefetch" href="/assets/js/54.afd8b938.js"><link rel="prefetch" href="/assets/js/55.563d7429.js"><link rel="prefetch" href="/assets/js/56.b7fa3e85.js"><link rel="prefetch" href="/assets/js/57.f1a89935.js"><link rel="prefetch" href="/assets/js/58.15388447.js"><link rel="prefetch" href="/assets/js/59.372e5f15.js"><link rel="prefetch" href="/assets/js/6.b798fcf5.js"><link rel="prefetch" href="/assets/js/60.a488faa3.js"><link rel="prefetch" href="/assets/js/61.76dadce9.js"><link rel="prefetch" href="/assets/js/62.21c77b63.js"><link rel="prefetch" href="/assets/js/63.5e49c47d.js"><link rel="prefetch" href="/assets/js/64.453510d9.js"><link rel="prefetch" href="/assets/js/65.993d90cc.js"><link rel="prefetch" href="/assets/js/66.4cab5d50.js"><link rel="prefetch" href="/assets/js/67.868bf75e.js"><link rel="prefetch" href="/assets/js/68.89613fc8.js"><link rel="prefetch" href="/assets/js/69.779e7f70.js"><link rel="prefetch" href="/assets/js/7.cb2f8a10.js"><link rel="prefetch" href="/assets/js/70.6b66c1a9.js"><link rel="prefetch" href="/assets/js/71.9783ef6a.js"><link rel="prefetch" href="/assets/js/72.5e7137bc.js"><link rel="prefetch" href="/assets/js/73.9fcb00bc.js"><link rel="prefetch" href="/assets/js/74.3a440a9c.js"><link rel="prefetch" href="/assets/js/8.01f6304b.js"><link rel="prefetch" href="/assets/js/9.e15aa5e8.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.f5338f93.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">程序员在深圳</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/cpp/" class="nav-link">
+  C++
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/AI/" class="nav-link router-link-active">
+  AI
+</a></div><div class="nav-item"><a href="/math/" class="nav-link">
+  math
+</a></div><div class="nav-item"><a href="/mysql_notes/" class="nav-link">
+  mysql
+</a></div><div class="nav-item"><a href="/tools/" class="nav-link">
+  tools
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="LeetCode" class="dropdown-title"><span class="title">LeetCode</span> <span class="arrow down"></span></button> <button type="button" aria-label="LeetCode" class="mobile-dropdown-title"><span class="title">LeetCode</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/leetcode/" class="nav-link">
+  articles
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/jieniu/LeetCode.git" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MyLeeCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/jieniu/articles" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/cpp/" class="nav-link">
+  C++
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/AI/" class="nav-link router-link-active">
+  AI
+</a></div><div class="nav-item"><a href="/math/" class="nav-link">
+  math
+</a></div><div class="nav-item"><a href="/mysql_notes/" class="nav-link">
+  mysql
+</a></div><div class="nav-item"><a href="/tools/" class="nav-link">
+  tools
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="LeetCode" class="dropdown-title"><span class="title">LeetCode</span> <span class="arrow down"></span></button> <button type="button" aria-label="LeetCode" class="mobile-dropdown-title"><span class="title">LeetCode</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/leetcode/" class="nav-link">
+  articles
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/jieniu/LeetCode.git" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MyLeeCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/jieniu/articles" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="【学习笔记】hands-on-machine-learning-chap3-classification"><a href="#【学习笔记】hands-on-machine-learning-chap3-classification" class="header-anchor">#</a> 【学习笔记】Hands On Machine Learning - Chap3. Classification</h1> <p>本章首先介绍了 MNIST 数据集，此数据集为 7 万张带标签的手写数字（0-9）图片，它被认为是机器学习领域的 HelloWorld，很多机器学习算法都可以在此数据集上进行训练、调参、对比。</p> <p>本章核心内容在如何评估一个分类器，介绍了混淆矩阵、Precision 和 Reccall 等衡量正样本的重要指标，及如何对这两个指标进行取舍，此外，还介绍了 ROC 曲线及 AUC 值，当然，肯定少不了 F1Score 了。</p> <p>最后，本章还介绍了构建多分类器的一般方法。作为科普，你还可以构建多 label 的分类器，以及每个 label 可取不同 value 的分类器。</p> <p>下面是详细笔记：</p> <h2 id="mnist"><a href="#mnist" class="header-anchor">#</a> MNIST</h2> <p>MNIST 数据集：70000 张手写数字小图片。这些图片被誉为 ML 中的 Hello World。</p> <p>手动加载 MNIST 步骤：</p> <ol><li>下载 <a href="https://github.com/amplab/datascience-sp14/raw/master/lab7/mldata/mnist-original.mat" target="_blank" rel="noopener noreferrer">mnist-original.mat<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li>调用 <code>sklearn.datasets.base.get_data_home()</code> 查看 sklearn 下载到本地的路径</li> <li>将下载后的文件 <code>mnist-original.mat</code> 拷贝到 <code>get_data_home()/mldata</code> 目录下</li> <li>调动 <code>fetch_mmldata()</code> 接口，获取 <code>mnist</code> 对象：如本地有，就不会从网上下载</li></ol> <div class="language- extra-class"><pre class="language-text"><code>from sklearn.datasets.base import get_data_home 
+from sklearn.datasets import fetch_mldata
+print (get_data_home())
+mnist = fetch_mldata('MNIST original')
+mnist
+----
+/Users/fengyajie/scikit_learn_data
+{'DESCR': 'mldata.org dataset: mnist-original',
+ 'COL_NAMES': ['label', 'data'],
+ 'target': array([0., 0., 0., ..., 9., 9., 9.]),
+ 'data': array([[0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0],
+        ...,
+        [0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0]], dtype=uint8)}
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code># 查看数据，该数据中包含 70000 张图片，每张图片拥有 784 个 features，
+# 因为该图片的规格为 28x28，每个像素的值的范围是 0(white)-255(black)
+X,y = mnist[&quot;data&quot;],mnist[&quot;target&quot;]
+print(X.shape,y.shape)
+----
+(70000, 784) (70000,)
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code># 显示其中一个样本
+%matplotlib inline
+import matplotlib
+import matplotlib.pyplot as plt
+some_digit = X[36000]
+some_digit_image = some_digit.reshape(28, 28)
+plt.imshow(some_digit_image, cmap = matplotlib.cm.binary,
+           interpolation=&quot;nearest&quot;)
+plt.axis(&quot;off&quot;)
+plt.show()
+y[36000]
+</code></pre></div><p><img src="https://upload-images.jianshu.io/upload_images/1933644-3d7bd9f7ea927484.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p> <div class="language- extra-class"><pre class="language-text"><code># 测试集和训练集
+X_train, X_test, y_train, y_test = X[:60000], X[60000:], y[:60000], y[60000:]
+# 打散训练集，避免相似的图片都在一块
+import numpy as np
+shuffle_index = np.random.permutation(60000)
+X_train, y_train = X_train[shuffle_index], y_train[shuffle_index]
+</code></pre></div><h2 id="训练二分类器"><a href="#训练二分类器" class="header-anchor">#</a> 训练二分类器</h2> <div class="language- extra-class"><pre class="language-text"><code>from sklearn.model_selection import cross_val_score
+# 识别数字 5 的分类器，使用 sklearn 提供的随机梯度下降算法
+y_train_5 = (y_train == 5)
+y_test_5 = (y_test == 5)
+from sklearn.linear_model import SGDClassifier
+sgd_clf = SGDClassifier(random_state=42)
+cross_val_score(sgd_clf, X_train, y_train_5, cv=3, scoring=&quot;accuracy&quot;)
+----
+array([0.9578 , 0.9607 , 0.96775])
+</code></pre></div><h2 id="效果评估"><a href="#效果评估" class="header-anchor">#</a> 效果评估</h2> <p>上面模型的准确率很高，有一个原因是其正样本的比例只有 10%，这种情况下，即便我全部猜【不是5】，准确率也有 90% 之高，所以一般我们不用准确率来衡量模型的好坏。</p> <h3 id="混淆矩阵"><a href="#混淆矩阵" class="header-anchor">#</a> 混淆矩阵</h3> <div class="language- extra-class"><pre class="language-text"><code>from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import confusion_matrix
+y_train_pred = cross_val_predict(sgd_clf, X_train, y_train_5, cv=3)
+confusion_matrix(y_train_5, y_train_pred)
+----
+array([[53556,  1023],
+       [ 1252,  4169]])
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code># 输出Precision score和recall score
+from sklearn.metrics import precision_score, recall_score
+from sklearn.metrics import f1_score
+print(&quot;precision_score={}, recall_score={}&quot;.format(precision_score(y_train_5, y_train_pred), recall_score(y_train_5, y_train_pred)))
+print(&quot;f1_score={}&quot;.format(f1_score(y_train_5, y_train_pred)))
+----
+precision_score=0.8029661016949152, recall_score=0.7690463014204021
+f1_score=0.7856402525204936
+</code></pre></div><h3 id="precision-recall-tradeoff"><a href="#precision-recall-tradeoff" class="header-anchor">#</a> Precision/Recall tradeoff</h3> <p>precision 和 recall 往往不能两全，一个提升了，另一个会下降，这两个指标需要进行权衡，例如在判断视频节目是否对小孩无害的场景下，我们希望 precision 越高越好，同时可以牺牲 recall；而在根据照片预测小偷的场景下，更希望 recall 越高越好。</p> <div class="language- extra-class"><pre class="language-text"><code># 绘制 precision 和 recall 曲线
+from sklearn.metrics import precision_recall_curve
+y_scores = cross_val_predict(sgd_clf, X_train, y_train_5, cv=3,
+                                 method=&quot;decision_function&quot;)
+precisions, recalls, thresholds = precision_recall_curve(y_train_5, y_scores)
+
+def plot_precision_recall_vs_threshold(precisions, recalls, thresholds): 
+    plt.plot(thresholds, precisions[:-1], &quot;b--&quot;, label=&quot;Precision&quot;) 
+    plt.plot(thresholds, recalls[:-1], &quot;g-&quot;, label=&quot;Recall&quot;) 
+    plt.xlabel(&quot;Threshold&quot;)
+    plt.legend(loc=&quot;upper left&quot;)
+    plt.ylim([0, 1])
+    
+plot_precision_recall_vs_threshold(precisions, recalls, thresholds)
+plt.show()
+</code></pre></div><p><img src="https://upload-images.jianshu.io/upload_images/1933644-4286faeae14b43e4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p> <h3 id="roc-曲线"><a href="#roc-曲线" class="header-anchor">#</a> ROC 曲线</h3> <div class="language- extra-class"><pre class="language-text"><code>from sklearn.metrics import roc_curve
+fpr, tpr, thresholds = roc_curve(y_train_5, y_scores)
+def plot_roc_curve(fpr, tpr, label=None): 
+    plt.plot(fpr, tpr, linewidth=2, label=label) 
+    plt.plot([0, 1], [0, 1], 'k--') 
+    plt.axis([0, 1, 0, 1])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+plot_roc_curve(fpr, tpr)
+plt.show()
+</code></pre></div><p><img src="https://upload-images.jianshu.io/upload_images/1933644-f8fa7f52bea69285.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p> <div class="language- extra-class"><pre class="language-text"><code># 计算 AUC
+from sklearn.metrics import roc_auc_score
+roc_auc_score(y_train_5, y_scores)
+----
+0.9655990736206981
+</code></pre></div><p>使用 F1Score 还是 AUC？取决于正样本和负样本的比例，如果正样本较少，你应该选择 F1Score，否则选择 AUC。</p> <p>使用随机森林</p> <div class="language- extra-class"><pre class="language-text"><code>from sklearn.ensemble import RandomForestClassifier
+forest_clf = RandomForestClassifier(random_state=42)
+y_probas_forest = cross_val_predict(forest_clf, X_train, y_train_5, cv=3,
+                                    method=&quot;predict_proba&quot;)
+y_scores_forest = y_probas_forest[:, 1]
+fpr_forest, tpr_forest, thresholds_forest = roc_curve(y_train_5,y_scores_forest)
+
+plt.plot(fpr, tpr, &quot;b:&quot;, label=&quot;SGD&quot;)
+plot_roc_curve(fpr_forest, tpr_forest, &quot;Random Forest&quot;)
+plt.legend(loc=&quot;bottom right&quot;)
+plt.show()
+</code></pre></div><p><img src="https://upload-images.jianshu.io/upload_images/1933644-d6f9ee86418accdf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p> <div class="language- extra-class"><pre class="language-text"><code># 随机森林的 auc
+roc_auc_score(y_train_5, y_scores_forest)
+----
+0.993283808868663
+</code></pre></div><h2 id="多分类器"><a href="#多分类器" class="header-anchor">#</a> 多分类器</h2> <p>分类器的分类</p> <ol><li>二分类器：Logistic Regression、SVM</li> <li>多分类器：Random Forest、Naive Bayes</li></ol> <p>除此之外，你也可以使用二分类器来构造多分类器，例如识别 0-9 十个数字，你可以训练 10 个二分类器，每个分类器用来识别一个数字，当你要预测一个数字时，将该数字分别输入到这十个分类器中，最后获得最高分的那个分类器，就是预测结果。这种方法也被称为 one-versus-all (OvA)</p> <div class="language- extra-class"><pre class="language-text"><code># 在 sklearn 中，其内部会自动训练多个分类器，并且在预测时给出分数最高的那个分类
+sgd_clf.fit(X_train, y_train)
+sgd_clf.predict([some_digit])
+----
+array([5.])
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>some_digit_scores = sgd_clf.decision_function([some_digit])
+some_digit_scores
+----
+array([[-227250.7532523 , -511911.42747987, -343850.9936749 ,
+        -194518.44134798, -341796.12282028,   10728.59041333,
+        -798149.80620821, -263564.01751255, -729498.66535121,
+        -553349.11568488]])
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code># 最高分数的下标
+np.argmax(some_digit_scores)
+# 分类
+sgd_clf.classes_
+sgd_clf.classes_[5]
+----
+5.0
+</code></pre></div><h2 id="错误分析"><a href="#错误分析" class="header-anchor">#</a> 错误分析</h2> <div class="language- extra-class"><pre class="language-text"><code># 交叉验证 + 混淆矩阵
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train.astype(np.float64))
+
+y_train_pred = cross_val_predict(sgd_clf, X_train_scaled, y_train, cv=3)
+conf_mx = confusion_matrix(y_train, y_train_pred)
+conf_mx
+----
+array([[5757,    4,   17,   11,    9,   38,   35,   11,   38,    3],
+       [   2, 6465,   47,   23,    6,   45,    7,   13,  121,   13],
+       [  59,   42, 5330,   96,   91,   24,   81,   55,  163,   17],
+       [  45,   44,  139, 5352,    0,  227,   35,   56,  130,  103],
+       [  22,   26,   37,    8, 5360,    7,   46,   34,   74,  228],
+       [  88,   42,   31,  196,   81, 4577,  107,   28,  175,   96],
+       [  40,   25,   48,    2,   44,   86, 5616,    9,   48,    0],
+       [  24,   19,   69,   32,   58,   10,    4, 5785,   17,  247],
+       [  57,  148,   79,  149,   11,  162,   56,   24, 5003,  162],
+       [  45,   35,   27,   86,  161,   29,    2,  182,   67, 5315]])
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code># 使用图像来表示混淆矩阵
+plt.matshow(conf_mx, cmap=plt.cm.gray)
+plt.show()
+</code></pre></div><p><img src="https://upload-images.jianshu.io/upload_images/1933644-97ba00e5479864dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p> <p>因为所有的图像都在主对角线上，所有该混淆矩阵看上去不错，5 号分类器看上去颜色深一点，说明它的预测效果没有其他分类器好</p> <div class="language- extra-class"><pre class="language-text"><code># 查看错误率，row_sums 是每个分类中实际的样本数
+row_sums = conf_mx.sum(axis=1, keepdims=True)
+norm_conf_mx = conf_mx/row_sums 
+np.fill_diagonal(norm_conf_mx, 0) # 填充对角线，只留出错误的数据
+plt.matshow(norm_conf_mx, cmap=plt.cm.gray)
+plt.show()
+</code></pre></div><p><img src="https://upload-images.jianshu.io/upload_images/1933644-b45bf8a9a3d9a0f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p> <p>8 和 9 两列比较白，意味着很多数字都错误的分类到了 8 和 9 两个数上；颜色非常深的行，意味着这个数字基本上预测对了，例如 1；</p> <p>对于你想调优的分类器，你可以相应的增加样本；或优化样本图片（使用 Scikit-Image, Pillow, or OpenCV），例如使它们都处于图片正中间，且不要过于偏斜。</p> <h2 id="多个-label-的分类器"><a href="#多个-label-的分类器" class="header-anchor">#</a> 多个 label 的分类器</h2> <p>向分类器输入一组数据，它会输出多个预测值，例如下面的程序，可以同时预测图片是否是大数（&gt;=7）及图片是否是奇数</p> <div class="language- extra-class"><pre class="language-text"><code>from sklearn.neighbors import KNeighborsClassifier
+y_train_large = (y_train &gt;= 7)
+y_train_odd = (y_train % 2 == 1)
+y_multilabel = np.c_[y_train_large, y_train_odd]
+
+# Kneighbors 分类器可以同时输出多组预测值
+knn_clf = KNeighborsClassifier()
+knn_clf.fit(X_train, y_multilabel)
+knn_clf.predict([some_digit])
+----
+array([[False,  True]])
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code># 你可以使用 f1_score + 交叉验证 的方法来衡量多值分类器的效果
+# 如果大数的图片远远多于奇数的图片，你可以将对每个label赋予一个权重，权重值根据其值的占比来设定
+#  方法也很简单，将下面的参数 average 设为 average=&quot;weighted&quot; 即可
+y_train_knn_pred = cross_val_predict(knn_clf, X_train, y_train, cv=3)
+f1_score(y_train, y_train_knn_pred, average=&quot;macro&quot;)
+</code></pre></div><h2 id="多输出的分类器"><a href="#多输出的分类器" class="header-anchor">#</a> 多输出的分类器</h2> <p>将多 label 的分类器进行扩展，每个 label 不止是 2 个值的分类器为多输出的分类器，下面的例子是：</p> <p>特征为带有噪音的图片（每个像素在原有图片的基础上加入噪声），target 为无噪音的图片，预测输出一张没有噪音的图片，即图片的每个像素为 1 个 label，每个 label 的取值范围为 0-255</p> <p>以上是该书第三章的学习笔记，你也可以下载 <a href="https://github.com/jieniu/HOML-exercises/blob/master/chapter3/ch3_note.ipynb" target="_blank" rel="noopener noreferrer">Jupyter NoteBook<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> 来具体操练一下。</p> <p>相关文章：</p> <ul><li><a href="/AI/homl-ch2.html">【学习笔记】Hands On Machine Learning - Chap2. End-to-End Machine Learning Project</a></li></ul></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/jieniu/articles/edit/master/docs/AI/homl-ch3.md" target="_blank" rel="noopener noreferrer">在 Github 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">上次更新:</span> <span class="time">6/7/2019, 12:21:12 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.df58ad8f.js" defer></script><script src="/assets/js/2.61eaf15d.js" defer></script><script src="/assets/js/20.b6be1672.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>virtualenv 命令集 | 程序员在深圳</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
+    <meta name="description" content="一个程序员的工作学习日志">
+    
+    <link rel="preload" href="/assets/css/0.styles.f5338f93.css" as="style"><link rel="preload" href="/assets/js/app.df58ad8f.js" as="script"><link rel="preload" href="/assets/js/2.61eaf15d.js" as="script"><link rel="preload" href="/assets/js/68.89613fc8.js" as="script"><link rel="prefetch" href="/assets/js/10.f87ecc1f.js"><link rel="prefetch" href="/assets/js/11.54366349.js"><link rel="prefetch" href="/assets/js/12.67a0f6b0.js"><link rel="prefetch" href="/assets/js/13.99b5efa8.js"><link rel="prefetch" href="/assets/js/14.d6c4161c.js"><link rel="prefetch" href="/assets/js/15.86108684.js"><link rel="prefetch" href="/assets/js/16.010195ae.js"><link rel="prefetch" href="/assets/js/17.ce5baee3.js"><link rel="prefetch" href="/assets/js/18.aadd0b94.js"><link rel="prefetch" href="/assets/js/19.572b0672.js"><link rel="prefetch" href="/assets/js/20.b6be1672.js"><link rel="prefetch" href="/assets/js/21.cd98384f.js"><link rel="prefetch" href="/assets/js/22.102317c8.js"><link rel="prefetch" href="/assets/js/23.a0861652.js"><link rel="prefetch" href="/assets/js/24.bf902e0e.js"><link rel="prefetch" href="/assets/js/25.07e70736.js"><link rel="prefetch" href="/assets/js/26.3217ccfc.js"><link rel="prefetch" href="/assets/js/27.234cd32e.js"><link rel="prefetch" href="/assets/js/28.7c7054a6.js"><link rel="prefetch" href="/assets/js/29.f9081eeb.js"><link rel="prefetch" href="/assets/js/3.b3b53faa.js"><link rel="prefetch" href="/assets/js/30.8e61b67c.js"><link rel="prefetch" href="/assets/js/31.6c587718.js"><link rel="prefetch" href="/assets/js/32.dc610c44.js"><link rel="prefetch" href="/assets/js/33.dcbd6e39.js"><link rel="prefetch" href="/assets/js/34.ae1fd795.js"><link rel="prefetch" href="/assets/js/35.138d4346.js"><link rel="prefetch" href="/assets/js/36.d31f5a6a.js"><link rel="prefetch" href="/assets/js/37.a3169296.js"><link rel="prefetch" href="/assets/js/38.aca3097a.js"><link rel="prefetch" href="/assets/js/39.c0de7ac0.js"><link rel="prefetch" href="/assets/js/4.e59358e7.js"><link rel="prefetch" href="/assets/js/40.5d68e63a.js"><link rel="prefetch" href="/assets/js/41.3dca7ff0.js"><link rel="prefetch" href="/assets/js/42.315116b4.js"><link rel="prefetch" href="/assets/js/43.cef3d9f5.js"><link rel="prefetch" href="/assets/js/44.88ac8ba1.js"><link rel="prefetch" href="/assets/js/45.73ffc9a4.js"><link rel="prefetch" href="/assets/js/46.04780877.js"><link rel="prefetch" href="/assets/js/47.f20a8844.js"><link rel="prefetch" href="/assets/js/48.e649e8cd.js"><link rel="prefetch" href="/assets/js/49.8a3b5784.js"><link rel="prefetch" href="/assets/js/5.1b393789.js"><link rel="prefetch" href="/assets/js/50.1a49c4ab.js"><link rel="prefetch" href="/assets/js/51.cbf7b21b.js"><link rel="prefetch" href="/assets/js/52.7788643e.js"><link rel="prefetch" href="/assets/js/53.e05e9f77.js"><link rel="prefetch" href="/assets/js/54.afd8b938.js"><link rel="prefetch" href="/assets/js/55.563d7429.js"><link rel="prefetch" href="/assets/js/56.b7fa3e85.js"><link rel="prefetch" href="/assets/js/57.f1a89935.js"><link rel="prefetch" href="/assets/js/58.15388447.js"><link rel="prefetch" href="/assets/js/59.372e5f15.js"><link rel="prefetch" href="/assets/js/6.b798fcf5.js"><link rel="prefetch" href="/assets/js/60.a488faa3.js"><link rel="prefetch" href="/assets/js/61.76dadce9.js"><link rel="prefetch" href="/assets/js/62.21c77b63.js"><link rel="prefetch" href="/assets/js/63.5e49c47d.js"><link rel="prefetch" href="/assets/js/64.453510d9.js"><link rel="prefetch" href="/assets/js/65.993d90cc.js"><link rel="prefetch" href="/assets/js/66.4cab5d50.js"><link rel="prefetch" href="/assets/js/67.868bf75e.js"><link rel="prefetch" href="/assets/js/69.779e7f70.js"><link rel="prefetch" href="/assets/js/7.cb2f8a10.js"><link rel="prefetch" href="/assets/js/70.6b66c1a9.js"><link rel="prefetch" href="/assets/js/71.9783ef6a.js"><link rel="prefetch" href="/assets/js/72.5e7137bc.js"><link rel="prefetch" href="/assets/js/73.9fcb00bc.js"><link rel="prefetch" href="/assets/js/74.3a440a9c.js"><link rel="prefetch" href="/assets/js/8.01f6304b.js"><link rel="prefetch" href="/assets/js/9.e15aa5e8.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.f5338f93.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">程序员在深圳</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/cpp/" class="nav-link">
+  C++
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/AI/" class="nav-link">
+  AI
+</a></div><div class="nav-item"><a href="/math/" class="nav-link">
+  math
+</a></div><div class="nav-item"><a href="/mysql_notes/" class="nav-link">
+  mysql
+</a></div><div class="nav-item"><a href="/tools/" class="nav-link router-link-active">
+  tools
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="LeetCode" class="dropdown-title"><span class="title">LeetCode</span> <span class="arrow down"></span></button> <button type="button" aria-label="LeetCode" class="mobile-dropdown-title"><span class="title">LeetCode</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/leetcode/" class="nav-link">
+  articles
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/jieniu/LeetCode.git" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MyLeeCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/jieniu/articles" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/cpp/" class="nav-link">
+  C++
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/AI/" class="nav-link">
+  AI
+</a></div><div class="nav-item"><a href="/math/" class="nav-link">
+  math
+</a></div><div class="nav-item"><a href="/mysql_notes/" class="nav-link">
+  mysql
+</a></div><div class="nav-item"><a href="/tools/" class="nav-link router-link-active">
+  tools
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="LeetCode" class="dropdown-title"><span class="title">LeetCode</span> <span class="arrow down"></span></button> <button type="button" aria-label="LeetCode" class="mobile-dropdown-title"><span class="title">LeetCode</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/leetcode/" class="nav-link">
+  articles
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/jieniu/LeetCode.git" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MyLeeCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/jieniu/articles" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="virtualenv-命令集"><a href="#virtualenv-命令集" class="header-anchor">#</a> virtualenv 命令集</h1> <p>virtualenv 是 python 中用来隔离不同项目的利器，本篇的目的主要是收集相关命令用法，便于在下次使用时快速检索</p> <p><strong>virtualenv</strong></p> <div class="language- extra-class"><pre class="language-text"><code># 安装
+$ pip install virtualenv
+# 激活虚拟环境
+$ source my_project/bin/activate
+# 退出虚拟环境
+$ deactivate
+# 输出当前依赖包
+$ pip freeze &gt; requirements.txt
+# 安装依赖包
+$ pip install -r requirements.txt
+</code></pre></div><p><strong>virtualenvwrapper</strong></p> <div class="language- extra-class"><pre class="language-text"><code># 安装
+$ pip install virtualenvwrapper
+# 修改~/.zshrc
+$ cat ~/.zshrc
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+    export WORKON_HOME=$HOME/virtualenvs
+    source /usr/local/bin/virtualenvwrapper.sh
+fi
+# 创建虚拟环境，创建成功后 $WORKON_HOME 下会多出一个文件夹
+$ mkvirtualenv my_prj
+# 使用虚拟环境
+$ workon my_prj
+# 退出虚拟环境
+$ deactivate
+# 删除
+$ rmvirtualenv my_prj
+# 列出所有环境
+$ lsvirtualenv
+# 进入到当前虚拟环境中
+$ cdvirtualenv
+# 进入到当前虚拟环境的 site-packages 中
+$ cdsitepackages
+</code></pre></div><p><strong>.gitignore</strong></p> <div class="language- extra-class"><pre class="language-text"><code>*.py[cod]     # 将匹配 .pyc、.pyo 和 .pyd文件
+__pycache__/  # 排除整个文件夹
+</code></pre></div><p>参考：</p> <ul><li>http://pythonguidecn.readthedocs.io/zh/latest/dev/virtualenvs.html</li></ul></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/jieniu/articles/edit/master/docs/tools/python-virtualenv-commands.md" target="_blank" rel="noopener noreferrer">在 Github 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">上次更新:</span> <span class="time">3/23/2019, 9:08:49 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.df58ad8f.js" defer></script><script src="/assets/js/2.61eaf15d.js" defer></script><script src="/assets/js/68.89613fc8.js" defer></script>
+  </body>
+</html>

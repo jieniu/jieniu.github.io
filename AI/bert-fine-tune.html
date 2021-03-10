@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>【译】BERT Fine-Tuning 指南（with PyTorch） | 程序员在深圳</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
+    <meta name="description" content="一个程序员的工作学习日志">
+    
+    <link rel="preload" href="/assets/css/0.styles.f5338f93.css" as="style"><link rel="preload" href="/assets/js/app.df58ad8f.js" as="script"><link rel="preload" href="/assets/js/2.61eaf15d.js" as="script"><link rel="preload" href="/assets/js/10.f87ecc1f.js" as="script"><link rel="prefetch" href="/assets/js/11.54366349.js"><link rel="prefetch" href="/assets/js/12.67a0f6b0.js"><link rel="prefetch" href="/assets/js/13.99b5efa8.js"><link rel="prefetch" href="/assets/js/14.d6c4161c.js"><link rel="prefetch" href="/assets/js/15.86108684.js"><link rel="prefetch" href="/assets/js/16.010195ae.js"><link rel="prefetch" href="/assets/js/17.ce5baee3.js"><link rel="prefetch" href="/assets/js/18.aadd0b94.js"><link rel="prefetch" href="/assets/js/19.572b0672.js"><link rel="prefetch" href="/assets/js/20.b6be1672.js"><link rel="prefetch" href="/assets/js/21.cd98384f.js"><link rel="prefetch" href="/assets/js/22.102317c8.js"><link rel="prefetch" href="/assets/js/23.a0861652.js"><link rel="prefetch" href="/assets/js/24.bf902e0e.js"><link rel="prefetch" href="/assets/js/25.07e70736.js"><link rel="prefetch" href="/assets/js/26.3217ccfc.js"><link rel="prefetch" href="/assets/js/27.234cd32e.js"><link rel="prefetch" href="/assets/js/28.7c7054a6.js"><link rel="prefetch" href="/assets/js/29.f9081eeb.js"><link rel="prefetch" href="/assets/js/3.b3b53faa.js"><link rel="prefetch" href="/assets/js/30.8e61b67c.js"><link rel="prefetch" href="/assets/js/31.6c587718.js"><link rel="prefetch" href="/assets/js/32.dc610c44.js"><link rel="prefetch" href="/assets/js/33.dcbd6e39.js"><link rel="prefetch" href="/assets/js/34.ae1fd795.js"><link rel="prefetch" href="/assets/js/35.138d4346.js"><link rel="prefetch" href="/assets/js/36.d31f5a6a.js"><link rel="prefetch" href="/assets/js/37.a3169296.js"><link rel="prefetch" href="/assets/js/38.aca3097a.js"><link rel="prefetch" href="/assets/js/39.c0de7ac0.js"><link rel="prefetch" href="/assets/js/4.e59358e7.js"><link rel="prefetch" href="/assets/js/40.5d68e63a.js"><link rel="prefetch" href="/assets/js/41.3dca7ff0.js"><link rel="prefetch" href="/assets/js/42.315116b4.js"><link rel="prefetch" href="/assets/js/43.cef3d9f5.js"><link rel="prefetch" href="/assets/js/44.88ac8ba1.js"><link rel="prefetch" href="/assets/js/45.73ffc9a4.js"><link rel="prefetch" href="/assets/js/46.04780877.js"><link rel="prefetch" href="/assets/js/47.f20a8844.js"><link rel="prefetch" href="/assets/js/48.e649e8cd.js"><link rel="prefetch" href="/assets/js/49.8a3b5784.js"><link rel="prefetch" href="/assets/js/5.1b393789.js"><link rel="prefetch" href="/assets/js/50.1a49c4ab.js"><link rel="prefetch" href="/assets/js/51.cbf7b21b.js"><link rel="prefetch" href="/assets/js/52.7788643e.js"><link rel="prefetch" href="/assets/js/53.e05e9f77.js"><link rel="prefetch" href="/assets/js/54.afd8b938.js"><link rel="prefetch" href="/assets/js/55.563d7429.js"><link rel="prefetch" href="/assets/js/56.b7fa3e85.js"><link rel="prefetch" href="/assets/js/57.f1a89935.js"><link rel="prefetch" href="/assets/js/58.15388447.js"><link rel="prefetch" href="/assets/js/59.372e5f15.js"><link rel="prefetch" href="/assets/js/6.b798fcf5.js"><link rel="prefetch" href="/assets/js/60.a488faa3.js"><link rel="prefetch" href="/assets/js/61.76dadce9.js"><link rel="prefetch" href="/assets/js/62.21c77b63.js"><link rel="prefetch" href="/assets/js/63.5e49c47d.js"><link rel="prefetch" href="/assets/js/64.453510d9.js"><link rel="prefetch" href="/assets/js/65.993d90cc.js"><link rel="prefetch" href="/assets/js/66.4cab5d50.js"><link rel="prefetch" href="/assets/js/67.868bf75e.js"><link rel="prefetch" href="/assets/js/68.89613fc8.js"><link rel="prefetch" href="/assets/js/69.779e7f70.js"><link rel="prefetch" href="/assets/js/7.cb2f8a10.js"><link rel="prefetch" href="/assets/js/70.6b66c1a9.js"><link rel="prefetch" href="/assets/js/71.9783ef6a.js"><link rel="prefetch" href="/assets/js/72.5e7137bc.js"><link rel="prefetch" href="/assets/js/73.9fcb00bc.js"><link rel="prefetch" href="/assets/js/74.3a440a9c.js"><link rel="prefetch" href="/assets/js/8.01f6304b.js"><link rel="prefetch" href="/assets/js/9.e15aa5e8.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.f5338f93.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">程序员在深圳</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/cpp/" class="nav-link">
+  C++
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/AI/" class="nav-link router-link-active">
+  AI
+</a></div><div class="nav-item"><a href="/math/" class="nav-link">
+  math
+</a></div><div class="nav-item"><a href="/mysql_notes/" class="nav-link">
+  mysql
+</a></div><div class="nav-item"><a href="/tools/" class="nav-link">
+  tools
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="LeetCode" class="dropdown-title"><span class="title">LeetCode</span> <span class="arrow down"></span></button> <button type="button" aria-label="LeetCode" class="mobile-dropdown-title"><span class="title">LeetCode</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/leetcode/" class="nav-link">
+  articles
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/jieniu/LeetCode.git" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MyLeeCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/jieniu/articles" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/cpp/" class="nav-link">
+  C++
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/AI/" class="nav-link router-link-active">
+  AI
+</a></div><div class="nav-item"><a href="/math/" class="nav-link">
+  math
+</a></div><div class="nav-item"><a href="/mysql_notes/" class="nav-link">
+  mysql
+</a></div><div class="nav-item"><a href="/tools/" class="nav-link">
+  tools
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="LeetCode" class="dropdown-title"><span class="title">LeetCode</span> <span class="arrow down"></span></button> <button type="button" aria-label="LeetCode" class="mobile-dropdown-title"><span class="title">LeetCode</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/leetcode/" class="nav-link">
+  articles
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/jieniu/LeetCode.git" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MyLeeCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/jieniu/articles" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="【译】bert-fine-tuning-指南-with-pytorch"><a href="#【译】bert-fine-tuning-指南-with-pytorch" class="header-anchor">#</a> 【译】BERT Fine-Tuning 指南（with PyTorch）</h1> <blockquote><p>By Chris McCormick and Nick Ryan</p> <p>原文链接：http://tinyurl.com/y74pvgyc</p></blockquote> <h2 id="介绍"><a href="#介绍" class="header-anchor">#</a> 介绍</h2> <h3 id="历史"><a href="#历史" class="header-anchor">#</a> 历史</h3> <p>2018 年是 NLP 突破的一年，迁移学习、特别是 Allen AI 的 ELMO，OpenAI 的 Open-GPT，以及 Google 的 BERT，这些模型让研究者们刷新了多项任务的基线（benchmark），并提供了容易被微调预训练模型（只需很少的数据量和计算量），使用它们，可产出当今最高水平的结果。但是，对于刚接触 NLP 甚至很多有经验的开发者来说，这些强大模型的理论和应用并不是那么容易理解。</p> <h3 id="什么是-bert"><a href="#什么是-bert" class="header-anchor">#</a> 什么是 BERT</h3> <p>2018年底发布的BERT（Bidirectional Encoder Representations from Transformers）是我们在本教程中要用到的模型，目的是让读者更好地理解和指导读者在 NLP 中使用迁移学习模型。BERT是一种预训练语言表征的方法，NLP实践者可以免费下载并使用这些模型。你可以用这些模型从文本数据中提取高质量的语言特征，也可以用自己的数据对这些模型在特定的任务（分类、实体识别、问答问题等）上进行微调，以产生高质量的预测结果。</p> <p>本文将解释如何修改和微调 BERT，以创建一个强大的 NLP 模型。</p> <h3 id="fine-tuning-的优势"><a href="#fine-tuning-的优势" class="header-anchor">#</a> Fine-tuning 的优势</h3> <p>在本教程中，我们将使用BERT来训练一个文本分类器。具体来说，我们将采取预训练的 BERT 模型，在末端添加一个未训练过的神经元层，然后训练新的模型来完成我们的分类任务。为什么要这样做，而不是训练一个特定的深度学习模型（CNN、BiLSTM等）？</p> <ol><li><p>更快速的开发</p> <p>首先，预训练的 BERT 模型权重已经编码了很多关于我们语言的信息。因此，训练我们的微调模型所需的时间要少得多——就好像我们已经对网络的底层进行了广泛的训练，只需要将它们作为我们的分类任务的特征，并轻微地调整它们就好。事实上，作者建议在特定的 NLP 任务上对 BERT 进行微调时，只需要 2-4 个 epochs 的训练（相比之下，从头开始训练原始 BERT 或 LSTM 模型需要数百个 GPU 小时）。</p></li> <li><p>更少的数据</p> <p>此外，也许同样重要的是，预训练这种方法，允许我们在一个比从头开始建立的模型所需要的数据集小得多的数据集上进行微调。从零开始建立的 NLP 模型的一个主要缺点是，我们通常需要一个庞大的数据集来训练我们的网络，以达到合理的精度，这意味着我们必须投入大量的时间和精力在数据集的创建上。通过对 BERT 进行微调，我们现在可以在更少的数据集上训练一个模型，使其达到良好的性能。</p></li> <li><p>更好的结果</p> <p>最后，这种简单的微调程过程（通常在 BERT 的基础上增加一个全连接层，并训练几个 epochs）被证明可以在广泛的任务中以最小的调节代价来实现最先进的结果：分类、语言推理、语义相似度、问答问题等。与其实现定制的、有时还很难理解的网络结构来完成特定的任务，不如使用 BERT 进行简单的微调，也许是一个更好的（至少不会差）选择。</p></li></ol> <h3 id="nlp-的转变"><a href="#nlp-的转变" class="header-anchor">#</a> NLP 的转变</h3> <p>这种向迁移学习的转变，与几年前计算机视觉领域发生的转变相似。为计算机视觉任务创建一个好的深度学习网络可能需要数百万个参数，并且训练成本非常高。研究人员发现，深度网络的特征表示可以分层进行学习（在最底层学习简单的特征，如物体边缘等，在更高的层逐渐增加复杂的特征）。与其每次从头开始训练一个新的网络，不如将训练好的网络的低层泛化图像特征复制并转移到另一个有不同任务的网络中使用。很快，下载一个预训练过的深度网络，然后为新任务快速地重新训练它，或者在上面添加额外的层，这已成为一种常见的做法——这比从头开始训练一个昂贵的网络要好得多。对许多人来说，2018年推出的深度预训练语言模型（ELMO、BERT、ULMFIT、Open-GPT等），预示着和计算机视觉一样，NLP 正在向迁移学习发生转变。</p> <p>让我们开始行动吧!</p> <h2 id="_1-安装"><a href="#_1-安装" class="header-anchor">#</a> 1. 安装</h2> <h3 id="_1-1-使用-colab-gpu-来训练"><a href="#_1-1-使用-colab-gpu-来训练" class="header-anchor">#</a> 1.1. 使用 Colab GPU 来训练</h3> <p>Google Colab 提供免费的 GPU 和 TPU！由于我们将训练一个大型的神经网络，所以最好使用这些硬件加速（本文中，我们将使用一个 GPU），否则训练将需要很长时间。</p> <p>你可以在目录中选择添加 GPU</p> <blockquote><p>Edit -&gt; Notebook Settings -&gt; Hardware accelerator -&gt; (GPU)</p></blockquote> <p>接着运行下面代码来确认 GPU 被检测到：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> torch
+device <span class="token operator">=</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">'cuda'</span> <span class="token keyword">if</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> <span class="token string">'cpu'</span><span class="token punctuation">)</span>
+device
+<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
+device<span class="token punctuation">(</span><span class="token builtin">type</span><span class="token operator">=</span><span class="token string">'cuda'</span><span class="token punctuation">)</span>
+</code></pre></div><h3 id="_1-2-安装-hugging-face-库"><a href="#_1-2-安装-hugging-face-库" class="header-anchor">#</a> 1.2. 安装 Hugging Face 库</h3> <p>下一步，我们来安装 Hugging Face 的 <a href="http://tinyurl.com/y2q7z646" target="_blank" rel="noopener noreferrer">transformers<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> 库，它将为我们提供一个 BERT 的 pytorch 接口（这个库包含其他预训练语言模型的接口，如 OpenAI 的 GPT 和 GPT-2）。我们选择了 pytorch 接口，因为它在高层次的API（很容易使用，但缺乏细节）和 tensorflow 代码（其中包含很多细节，这往往会让我们陷入关于 tensorflow 的学习中，而这里的目的是 BERT！）之间取得了很好的平衡。</p> <p>目前来看，Hugging Face 似乎是被广泛接受的、最强大的 Bert 接口。除了支持各种不同的预训练模型外，该库还包含了适应于不同任务的模型的预构建。例如，在本教程中，我们将使用 <code>BertForSequenceClassification</code> 来做文本分类。</p> <p>该库还为 token classification、question answering、next sentence prediction 等不同 NLP 任务提供特定的类库。使用这些预构建的类，可以简化定制 BERT 的过程。安装 transformer:</p> <div class="language- extra-class"><pre class="language-text"><code>!pip install transformers
+</code></pre></div><p>本教程中的代码实际上是 huggingface 样例代码 <a href="http://tinyurl.com/y8ahg436" target="_blank" rel="noopener noreferrer">run_glue.py<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> 的简化版本。</p> <p><code>run_glue.py</code> 是一个有用的工具，它可以让你选择你想运行的 GLUE 任务，以及你想使用的预训练模型。它还支持使用 CPU、单个 GPU 或多个 GPU。如果你想进一步提高速度，它甚至支持使用 16 位精度。</p> <p>遗憾的是，所有这些配置让代码的可读性变得很差，本教程会极大的简化这些代码，并增加大量的注释，让大家知其然，并知其所以然。</p> <h2 id="_2-加载-cola-数据集"><a href="#_2-加载-cola-数据集" class="header-anchor">#</a> 2. 加载 CoLA 数据集</h2> <p>我们将使用 <a href="https://nyu-mll.github.io/CoLA/" target="_blank" rel="noopener noreferrer">The Corpus of Linguistic Acceptability（CoLA）<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>数据集进行单句分类。它是一组被标记为语法正确或错误的句子。它于2018年5月首次发布，是 &quot;GLUE Benchmark&quot; 中的数据集之一。</p> <h3 id="_2-1-下载-解压"><a href="#_2-1-下载-解压" class="header-anchor">#</a> 2.1. 下载 &amp; 解压</h3> <p>我们使用 <code>wget</code> 来下载数据集，安装 <code>wget</code>：</p> <div class="language- extra-class"><pre class="language-text"><code>!pip install wget
+</code></pre></div><p>下载数据集</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> wget
+<span class="token keyword">import</span> os
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Downloading dataset...'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 数据集的下载链接</span>
+url <span class="token operator">=</span> <span class="token string">'https://nyu-mll.github.io/CoLA/cola_public_1.1.zip'</span>
+
+<span class="token comment"># 如本地没有，则下载数据集 </span>
+<span class="token keyword">if</span> <span class="token keyword">not</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span><span class="token string">'./cola_public_1.1.zip'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    wget<span class="token punctuation">.</span>download<span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token string">'./cola_public_1.1.zip'</span><span class="token punctuation">)</span>
+</code></pre></div><p>解压之后，你就可以在 Colab 左侧的文件系统窗口看到这些文件：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 如果没解压过，则解压zip包</span>
+<span class="token keyword">if</span> <span class="token keyword">not</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span><span class="token string">'./cola_public/'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    !unzip cola_public_1<span class="token punctuation">.</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token builtin">zip</span>
+</code></pre></div><h3 id="_2-2-解析"><a href="#_2-2-解析" class="header-anchor">#</a> 2.2. 解析</h3> <p>从解压后的文件名就可以看出哪些文件是分词后的，哪些是原始文件。</p> <p>我们使用未分词版本的数据，因为要应用预训练 BERT，必须使用模型自带的分词器。这是因为： (1) 模型有一个固定的词汇表， (2) BERT 用一种特殊的方式来处理词汇外的单词（out-of-vocabulary）。</p> <p>先使用 pandas 来解析 <code>in_domain_train.tsv</code> 文件，并预览这些数据：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+
+<span class="token comment"># 加载数据集到 pandas 的 dataframe 中</span>
+df <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">&quot;./cola_public/raw/in_domain_train.tsv&quot;</span><span class="token punctuation">,</span> delimiter<span class="token operator">=</span><span class="token string">'\t'</span><span class="token punctuation">,</span> header<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'sentence_source'</span><span class="token punctuation">,</span> <span class="token string">'label'</span><span class="token punctuation">,</span> <span class="token string">'label_notes'</span><span class="token punctuation">,</span> <span class="token string">'sentence'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 打印数据集的记录数</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Number of training sentences: {:,}\n'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>df<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 抽样10条数据来预览一下</span>
+df<span class="token punctuation">.</span>sample<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+</code></pre></div><table><thead><tr><th style="text-align:left;">sentence_source</th> <th style="text-align:right;">label</th> <th style="text-align:right;">label_notes</th> <th style="text-align:right;">sentence</th> <th></th></tr></thead> <tbody><tr><td style="text-align:left;">1406</td> <td style="text-align:right;">r-67</td> <td style="text-align:right;">1</td> <td style="text-align:right;">NaN</td> <td>A plan to negotiate an honorable end to the wa...</td></tr> <tr><td style="text-align:left;">7315</td> <td style="text-align:right;">sks13</td> <td style="text-align:right;">0</td> <td style="text-align:right;">*</td> <td>I said.</td></tr> <tr><td style="text-align:left;">8277</td> <td style="text-align:right;">ad03</td> <td style="text-align:right;">0</td> <td style="text-align:right;">*</td> <td>What Julie did of Lloyd was become fond.</td></tr> <tr><td style="text-align:left;">621</td> <td style="text-align:right;">bc01</td> <td style="text-align:right;">1</td> <td style="text-align:right;">NaN</td> <td>The ball lies completely in the box.</td></tr> <tr><td style="text-align:left;">6646</td> <td style="text-align:right;">m_02</td> <td style="text-align:right;">1</td> <td style="text-align:right;">NaN</td> <td>Very heavy, this parcel!</td></tr> <tr><td style="text-align:left;">361</td> <td style="text-align:right;">bc01</td> <td style="text-align:right;">0</td> <td style="text-align:right;">??</td> <td>Which problem do you wonder whether John said ...</td></tr> <tr><td style="text-align:left;">7193</td> <td style="text-align:right;">sks13</td> <td style="text-align:right;">0</td> <td style="text-align:right;">*</td> <td>Will put, this girl in the red coat will put a...</td></tr> <tr><td style="text-align:left;">4199</td> <td style="text-align:right;">ks08</td> <td style="text-align:right;">1</td> <td style="text-align:right;">NaN</td> <td>The papers removed from the safe have not been...</td></tr> <tr><td style="text-align:left;">5251</td> <td style="text-align:right;">b_82</td> <td style="text-align:right;">1</td> <td style="text-align:right;">NaN</td> <td>He continued writing poems.</td></tr> <tr><td style="text-align:left;">3617</td> <td style="text-align:right;">ks08</td> <td style="text-align:right;">1</td> <td style="text-align:right;">NaN</td> <td>It was last night that the policeman met sever...</td></tr></tbody></table> <p>上表中我们主要关心 <code>sentence</code> 和 <code>label</code> 字段，<code>label</code> 中 0 表示“语法不可接受”，而 1 表示“语法可接受”。</p> <p>下面是 5 个语法上不可接受的例子，可以看到相对于情感分析来说，这个任务要困难很多：</p> <div class="language-python extra-class"><pre class="language-python"><code>df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span>df<span class="token punctuation">.</span>label <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>sample<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">'sentence'</span><span class="token punctuation">,</span> <span class="token string">'label'</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+</code></pre></div><table><thead><tr><th style="text-align:left;">sentence</th> <th style="text-align:right;">label</th> <th></th></tr></thead> <tbody><tr><td style="text-align:left;">4867</td> <td style="text-align:right;">They investigated.</td> <td>0</td></tr> <tr><td style="text-align:left;">200</td> <td style="text-align:right;">The more he reads, the more books I wonder to ...</td> <td>0</td></tr> <tr><td style="text-align:left;">4593</td> <td style="text-align:right;">Any zebras can't fly.</td> <td>0</td></tr> <tr><td style="text-align:left;">3226</td> <td style="text-align:right;">Cities destroy easily.</td> <td>0</td></tr> <tr><td style="text-align:left;">7337</td> <td style="text-align:right;">The time elapsed the day.</td> <td>0</td></tr></tbody></table> <p>我们把 <code>sentence</code> 和 <code>label</code> 字段加载到 numpy 数组中</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 构建 sentences 和 labels 列表</span>
+sentences <span class="token operator">=</span> df<span class="token punctuation">.</span>sentence<span class="token punctuation">.</span>values
+labels <span class="token operator">=</span> df<span class="token punctuation">.</span>label<span class="token punctuation">.</span>values
+</code></pre></div><h2 id="_3-分词-格式化输入层"><a href="#_3-分词-格式化输入层" class="header-anchor">#</a> 3. 分词 &amp; 格式化输入层</h2> <p>在本小节中，我们会将数据集转化为可被 BERT 训练的格式。</p> <h3 id="_3-1-bert-分词器"><a href="#_3-1-bert-分词器" class="header-anchor">#</a> 3.1. BERT 分词器</h3> <p>要将文本输入到 BERT 中，必须先对它们分词，并使用模型内部提供的词汇表，把这些词转换为词的下标。</p> <p>先在代码中导入 BERT 库，这里使用 &quot;uncased&quot; 小写版本的预训练模型：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">from</span> transformers <span class="token keyword">import</span> BertTokenizer
+
+<span class="token comment"># 加载 BERT 分词器</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Loading BERT tokenizer...'</span><span class="token punctuation">)</span>
+tokenizer <span class="token operator">=</span> BertTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'bert-base-uncased'</span><span class="token punctuation">,</span> do_lower_case<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+</code></pre></div><p>我们输入一个句子试试：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 输出原始句子</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">' Original: '</span><span class="token punctuation">,</span> sentences<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 将分词后的内容输出</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Tokenized: '</span><span class="token punctuation">,</span> tokenizer<span class="token punctuation">.</span>tokenize<span class="token punctuation">(</span>sentences<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 将每个词映射到词典下标</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Token IDs: '</span><span class="token punctuation">,</span> tokenizer<span class="token punctuation">.</span>convert_tokens_to_ids<span class="token punctuation">(</span>tokenizer<span class="token punctuation">.</span>tokenize<span class="token punctuation">(</span>sentences<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
+Original<span class="token punctuation">:</span>  Our friends won't buy this analysis<span class="token punctuation">,</span> let alone the <span class="token builtin">next</span> one we propose<span class="token punctuation">.</span>
+Tokenized<span class="token punctuation">:</span>  <span class="token punctuation">[</span><span class="token string">'our'</span><span class="token punctuation">,</span> <span class="token string">'friends'</span><span class="token punctuation">,</span> <span class="token string">'won'</span><span class="token punctuation">,</span> <span class="token string">&quot;'&quot;</span><span class="token punctuation">,</span> <span class="token string">'t'</span><span class="token punctuation">,</span> <span class="token string">'buy'</span><span class="token punctuation">,</span> <span class="token string">'this'</span><span class="token punctuation">,</span> <span class="token string">'analysis'</span><span class="token punctuation">,</span> <span class="token string">','</span><span class="token punctuation">,</span> <span class="token string">'let'</span><span class="token punctuation">,</span> <span class="token string">'alone'</span><span class="token punctuation">,</span> <span class="token string">'the'</span><span class="token punctuation">,</span> <span class="token string">'next'</span><span class="token punctuation">,</span> <span class="token string">'one'</span><span class="token punctuation">,</span> <span class="token string">'we'</span><span class="token punctuation">,</span> <span class="token string">'propose'</span><span class="token punctuation">,</span> <span class="token string">'.'</span><span class="token punctuation">]</span>
+Token IDs<span class="token punctuation">:</span>  <span class="token punctuation">[</span><span class="token number">2256</span><span class="token punctuation">,</span> <span class="token number">2814</span><span class="token punctuation">,</span> <span class="token number">2180</span><span class="token punctuation">,</span> <span class="token number">1005</span><span class="token punctuation">,</span> <span class="token number">1056</span><span class="token punctuation">,</span> <span class="token number">4965</span><span class="token punctuation">,</span> <span class="token number">2023</span><span class="token punctuation">,</span> <span class="token number">4106</span><span class="token punctuation">,</span> <span class="token number">1010</span><span class="token punctuation">,</span> <span class="token number">2292</span><span class="token punctuation">,</span> <span class="token number">2894</span><span class="token punctuation">,</span> <span class="token number">1996</span><span class="token punctuation">,</span> <span class="token number">2279</span><span class="token punctuation">,</span> <span class="token number">2028</span><span class="token punctuation">,</span> <span class="token number">2057</span><span class="token punctuation">,</span> <span class="token number">16599</span><span class="token punctuation">,</span> <span class="token number">1012</span><span class="token punctuation">]</span>
+</code></pre></div><p>在真正训练的时候，我们使用 <code>tokenize.encode</code> 这个函数来完成上面 <code>tokenize</code> 和 <code>convert_tokens_to_ids</code> 两个步骤。</p> <p>在这之前，我们先介绍下 BERT 的格式化要求。</p> <h3 id="_3-2-格式化要求"><a href="#_3-2-格式化要求" class="header-anchor">#</a> 3.2. 格式化要求</h3> <p>BERT 要求我们：</p> <ol><li>在句子的句首和句尾添加特殊的符号</li> <li>给句子填充 or 截断，使每个句子保持固定的长度</li> <li>用 “attention mask” 来显示的区分填充的 tokens 和非填充的 tokens。</li></ol> <h4 id="特殊符号"><a href="#特殊符号" class="header-anchor">#</a> 特殊符号</h4> <p><strong><code>[SEP]</code></strong></p> <p>在每个句子的结尾，需要添加特殊的 <code>[SEP]</code> 符号。</p> <p>在以输入为两个句子的任务中（例如：句子 A 中的问题的答案是否可以在句子 B 中找到），该符号为这两个句子的分隔符。</p> <p>目前为止我还不清楚为什么要在单句中加入该符号，但既然这样要求我们就这么做吧。</p> <p><strong><code>[CLS]</code></strong></p> <p>在分类任务中，我们需要将 <code>[CLS]</code> 符号插入到每个句子的开头。</p> <p>这个符号有特殊的意义，BERT 包含 12 个 Transformer 层，每层接受一组 token 的 embeddings 列表作为输入，并产生相同数目的 embeddings 作为输出（当然，它们的值是不同的）。</p> <p><img src="https://github.com/jieniu/articles/blob/master/docs/.vuepress/public/CLS_token_500x606.png?raw=true" alt="Illustration of CLS token purpose"></p> <p>最后一层 transformer 的输出，只有第 1 个 embedding（对应到 <code>[CLS]</code> 符号）会输入到分类器中。</p> <blockquote><p>“The first token of every sequence is always a special classification token (<code>[CLS]</code>). The final hidden state corresponding to this token is used as the aggregate sequence representation for classification tasks.” (from the <a href="https://arxiv.org/pdf/1810.04805.pdf" target="_blank" rel="noopener noreferrer">BERT paper<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>)</p></blockquote> <p>你也许会想到对最后一层的 embeddings 使用一些池化策略，但没有必要。因为 BERT 就是被训练成只使用 <code>[CLS]</code> 来做分类，它会把分类所需的一切信息编码到 <code>[CLS]</code> 对应的 768 维 embedding 向量中，相当于它已经为我们做好了池化工作。</p> <h4 id="句长-注意力掩码-attention-mask"><a href="#句长-注意力掩码-attention-mask" class="header-anchor">#</a> 句长 &amp; 注意力掩码（Attention Mask）</h4> <p>很明显，数据集中句子长度的取值范围很大，BERT 该如何处理这个问题呢？</p> <p>BERT 有两个限制条件：</p> <ol><li><p>所有句子必须被填充或截断到固定的长度，句子最大的长度为 512 个 tokens。</p></li> <li><p>填充句子要使用 <code>[PAD]</code> 符号，它在 BERT 词典中的下标为 0，下图是最大长度为 8 个 tokens 的填充说明：</p></li></ol> <p><img src="https://github.com/jieniu/articles/blob/master/docs/.vuepress/public/padding_and_mask.png?raw=true" alt="img"></p> <p>“Attention Mask” 是一个只有 0 和 1 组成的数组，标记哪些 tokens 是填充的，哪些不是的。掩码会告诉 BERT 中的 “Self-Attention” 机制不去处理这些填充的符号。</p> <p>句子的最大长度配置会影响训练和评估速度，例如，在 Tesla K80 上有以下测试：</p> <div class="language- extra-class"><pre class="language-text"><code>MAX_LEN = 128  # 每个 epoch 要训练 5'28''
+MAX_LEN = 64   # 每个 epoch 要训练 2'27''
+</code></pre></div><h3 id="_3-3-对数据集分词"><a href="#_3-3-对数据集分词" class="header-anchor">#</a> 3.3. 对数据集分词</h3> <p>transformers 库提供的 <code>encode</code> 函数会为我们处理大多数解析和数据预处理的工作。</p> <p>在编码文本之前，我们需要确定 <code>MAX_LEN</code> 这个参数，下面的代码可以计算数据集中句子的最大长度：</p> <div class="language-python extra-class"><pre class="language-python"><code>max_len <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token keyword">for</span> sent <span class="token keyword">in</span> sentences<span class="token punctuation">:</span>
+
+    <span class="token comment"># 将文本分词，并添加 `[CLS]` 和 `[SEP]` 符号</span>
+    input_ids <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>encode<span class="token punctuation">(</span>sent<span class="token punctuation">,</span> add_special_tokens<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    max_len <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>max_len<span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>input_ids<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Max sentence length: '</span><span class="token punctuation">,</span> max_len<span class="token punctuation">)</span>
+</code></pre></div><p>为了避免不会出现更长的句子，这里我们将 <code>MAX_LEN</code> 设为 64。下面我们正式开始分词。</p> <p>函数 <code>tokenizer.encode_plus</code> 包含以下步骤：</p> <ol><li>将句子分词为 tokens。</li> <li>在两端添加特殊符号 <code>[CLS]</code> 和<code>[SEP]</code>。</li> <li>将 tokens 映射为下标 IDs。</li> <li>将列表填充或截断为固定的长度。</li> <li>创建 attention masks，将填充的和非填充 tokens 区分开来。</li></ol> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 将数据集分完词后存储到列表中</span>
+input_ids <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+attention_masks <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token keyword">for</span> sent <span class="token keyword">in</span> sentences<span class="token punctuation">:</span>
+    encoded_dict <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>encode_plus<span class="token punctuation">(</span>
+                        sent<span class="token punctuation">,</span>                      <span class="token comment"># 输入文本</span>
+                        add_special_tokens <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">,</span> <span class="token comment"># 添加 '[CLS]' 和 '[SEP]'</span>
+                        max_length <span class="token operator">=</span> <span class="token number">64</span><span class="token punctuation">,</span>           <span class="token comment"># 填充 &amp; 截断长度</span>
+                        pad_to_max_length <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">,</span>
+                        return_attention_mask <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">,</span>   <span class="token comment"># 返回 attn. masks.</span>
+                        return_tensors <span class="token operator">=</span> <span class="token string">'pt'</span><span class="token punctuation">,</span>     <span class="token comment"># 返回 pytorch tensors 格式的数据</span>
+                   <span class="token punctuation">)</span>
+    
+    <span class="token comment"># 将编码后的文本加入到列表  </span>
+    input_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span>encoded_dict<span class="token punctuation">[</span><span class="token string">'input_ids'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    
+    <span class="token comment"># 将文本的 attention mask 也加入到 attention_masks 列表</span>
+    attention_masks<span class="token punctuation">.</span>append<span class="token punctuation">(</span>encoded_dict<span class="token punctuation">[</span><span class="token string">'attention_mask'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 将列表转换为 tensor</span>
+input_ids <span class="token operator">=</span> torch<span class="token punctuation">.</span>cat<span class="token punctuation">(</span>input_ids<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+attention_masks <span class="token operator">=</span> torch<span class="token punctuation">.</span>cat<span class="token punctuation">(</span>attention_masks<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+labels <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>labels<span class="token punctuation">)</span>
+
+<span class="token comment"># 输出第 1 行文本的原始和编码后的信息</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Original: '</span><span class="token punctuation">,</span> sentences<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Token IDs:'</span><span class="token punctuation">,</span> input_ids<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre></div><h3 id="_3-4-拆分训练集和验证集"><a href="#_3-4-拆分训练集和验证集" class="header-anchor">#</a> 3.4. 拆分训练集和验证集</h3> <p>将 90% 的数据集作为训练集，剩下的 10% 作为验证集：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">from</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data <span class="token keyword">import</span> TensorDataset<span class="token punctuation">,</span> random_split
+
+<span class="token comment"># 将输入数据合并为 TensorDataset 对象</span>
+dataset <span class="token operator">=</span> TensorDataset<span class="token punctuation">(</span>input_ids<span class="token punctuation">,</span> attention_masks<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
+
+<span class="token comment"># 计算训练集和验证集大小</span>
+train_size <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token number">0.9</span> <span class="token operator">*</span> <span class="token builtin">len</span><span class="token punctuation">(</span>dataset<span class="token punctuation">)</span><span class="token punctuation">)</span>
+val_size <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>dataset<span class="token punctuation">)</span> <span class="token operator">-</span> train_size
+
+<span class="token comment"># 按照数据大小随机拆分训练集和测试集</span>
+train_dataset<span class="token punctuation">,</span> val_dataset <span class="token operator">=</span> random_split<span class="token punctuation">(</span>dataset<span class="token punctuation">,</span> <span class="token punctuation">[</span>train_size<span class="token punctuation">,</span> val_size<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{:&gt;5,} training samples'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>train_size<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{:&gt;5,} validation samples'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>val_size<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre></div><p>我们使用 <code>DataLoader</code> 类来读取数据集，相对于一般的 <code>for</code> 循环来说，这种方法在训练期间会比较节省内存：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">from</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data <span class="token keyword">import</span> DataLoader<span class="token punctuation">,</span> RandomSampler<span class="token punctuation">,</span> SequentialSampler
+
+<span class="token comment"># 在 fine-tune 的训练中，BERT 作者建议小批量大小设为 16 或 32</span>
+batch_size <span class="token operator">=</span> <span class="token number">32</span>
+
+<span class="token comment"># 为训练和验证集创建 Dataloader，对训练样本随机洗牌</span>
+train_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>
+            train_dataset<span class="token punctuation">,</span>  <span class="token comment"># 训练样本</span>
+            sampler <span class="token operator">=</span> RandomSampler<span class="token punctuation">(</span>train_dataset<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment"># 随机小批量</span>
+            batch_size <span class="token operator">=</span> batch_size <span class="token comment"># 以小批量进行训练</span>
+        <span class="token punctuation">)</span>
+
+<span class="token comment"># 验证集不需要随机化，这里顺序读取就好</span>
+validation_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>
+            val_dataset<span class="token punctuation">,</span> <span class="token comment"># 验证样本</span>
+            sampler <span class="token operator">=</span> SequentialSampler<span class="token punctuation">(</span>val_dataset<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment"># 顺序选取小批量</span>
+            batch_size <span class="token operator">=</span> batch_size 
+        <span class="token punctuation">)</span>
+</code></pre></div><h2 id="_4-训练分类模型"><a href="#_4-训练分类模型" class="header-anchor">#</a> 4. 训练分类模型</h2> <p>现在模型的输入数据已经准备好了，是时候开始微调了。</p> <h3 id="_4-1-bertforsequenceclassification"><a href="#_4-1-bertforsequenceclassification" class="header-anchor">#</a> 4.1. BertForSequenceClassification</h3> <p>在本任务中，我们首先需要将预训练 BERT 模型改为分类模型。接着，用我们的数据集来训练这个模型，以使该模型能够端到端的、很好的适应于我们的任务。</p> <p>幸运的是，huggingface 的 pytorch 实现包含一系列接口，就是为不同的 NLP 任务设计的。这些接口无一例外的构建于 BERT 模型之上，对于不同的 NLP 任务，它们有不同的结构和不同的输出类型。</p> <p>以下是当前提供给微调的类列表：</p> <ul><li>BertModel</li> <li>BertForPreTraining</li> <li>BertForNextSentencePrediction</li> <li>BertForNextSentencePrediction</li> <li><strong>BertForSequenceClassification</strong> - 我们使用这个</li> <li>BertForTokenClassification</li> <li>BertForQuestionAnswering</li></ul> <p>这些类的文档在<a href="http://tinyurl.com/yckzzkdr" target="_blank" rel="noopener noreferrer">这里<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>。</p> <p>我们将使用 <a href="http://tinyurl.com/yallkgau" target="_blank" rel="noopener noreferrer">BertForSequenceClassification<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>，它由一个普通的 BERT 模型和一个单线性分类层组成，而后者主要负责文本分类。当我们向模型输入数据时，整个预训练 BERT 模型和额外的未训练的分类层将会一起被训练。</p> <p>好了， 我们现在加载 BERT！有几种不同的预训练模型可供选择，&quot;bert-base-uncased&quot; 是只有小写字母的版本，且它是 &quot;base&quot; 和 &quot;large&quot; 中的较小版。</p> <p>接口 <code>from_pretrained</code> 的文档在<a href="http://tinyurl.com/y94gdvh6" target="_blank" rel="noopener noreferrer">这里<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>，额外的参数说明在<a href="http://tinyurl.com/yc9zjw9t" target="_blank" rel="noopener noreferrer">这里<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>。</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">from</span> transformers <span class="token keyword">import</span> BertForSequenceClassification<span class="token punctuation">,</span> AdamW<span class="token punctuation">,</span> BertConfig
+
+<span class="token comment"># 加载 BertForSequenceClassification, 预训练 BERT 模型 + 顶层的线性分类层 </span>
+model <span class="token operator">=</span> BertForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>
+    <span class="token string">&quot;bert-base-uncased&quot;</span><span class="token punctuation">,</span> <span class="token comment"># 小写的 12 层预训练模型</span>
+    num_labels <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token comment"># 分类数 --2 表示二分类</span>
+                    <span class="token comment"># 你可以改变这个数字，用于多分类任务  </span>
+    output_attentions <span class="token operator">=</span> <span class="token boolean">False</span><span class="token punctuation">,</span> <span class="token comment"># 模型是否返回 attentions weights.</span>
+    output_hidden_states <span class="token operator">=</span> <span class="token boolean">False</span><span class="token punctuation">,</span> <span class="token comment"># 模型是否返回所有隐层状态.</span>
+<span class="token punctuation">)</span>
+
+<span class="token comment"># 在 gpu 中运行该模型</span>
+model<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre></div><p>好奇心使然，我们可以根据参数名来查看所有的模型参数。</p> <p>下面会打印参数名和参数的形状：</p> <ol><li>embedding 层</li> <li>12 层 transformers 的第 1 层</li> <li>输出层</li></ol> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 将所有模型参数转换为一个列表</span>
+params <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>model<span class="token punctuation">.</span>named_parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'The BERT model has {:} different named parameters.\n'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'==== Embedding Layer ====\n'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> p <span class="token keyword">in</span> params<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;{:&lt;55} {:&gt;12}&quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">(</span><span class="token builtin">tuple</span><span class="token punctuation">(</span>p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n==== First Transformer ====\n'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> p <span class="token keyword">in</span> params<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">:</span><span class="token number">21</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;{:&lt;55} {:&gt;12}&quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">(</span><span class="token builtin">tuple</span><span class="token punctuation">(</span>p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n==== Output Layer ====\n'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> p <span class="token keyword">in</span> params<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">4</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;{:&lt;55} {:&gt;12}&quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">(</span><span class="token builtin">tuple</span><span class="token punctuation">(</span>p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre></div><p>输出</p> <div class="language- extra-class"><pre class="language-text"><code>The BERT model has 201 different named parameters.
+
+==== Embedding Layer ====
+
+bert.embeddings.word_embeddings.weight                  (30522, 768)
+bert.embeddings.position_embeddings.weight                (512, 768)
+bert.embeddings.token_type_embeddings.weight                (2, 768)
+bert.embeddings.LayerNorm.weight                              (768,)
+bert.embeddings.LayerNorm.bias                                (768,)
+
+==== First Transformer ====
+
+bert.encoder.layer.0.attention.self.query.weight          (768, 768)
+bert.encoder.layer.0.attention.self.query.bias                (768,)
+bert.encoder.layer.0.attention.self.key.weight            (768, 768)
+bert.encoder.layer.0.attention.self.key.bias                  (768,)
+bert.encoder.layer.0.attention.self.value.weight          (768, 768)
+bert.encoder.layer.0.attention.self.value.bias                (768,)
+bert.encoder.layer.0.attention.output.dense.weight        (768, 768)
+bert.encoder.layer.0.attention.output.dense.bias              (768,)
+bert.encoder.layer.0.attention.output.LayerNorm.weight        (768,)
+bert.encoder.layer.0.attention.output.LayerNorm.bias          (768,)
+bert.encoder.layer.0.intermediate.dense.weight           (3072, 768)
+bert.encoder.layer.0.intermediate.dense.bias                 (3072,)
+bert.encoder.layer.0.output.dense.weight                 (768, 3072)
+bert.encoder.layer.0.output.dense.bias                        (768,)
+bert.encoder.layer.0.output.LayerNorm.weight                  (768,)
+bert.encoder.layer.0.output.LayerNorm.bias                    (768,)
+
+==== Output Layer ====
+
+bert.pooler.dense.weight                                  (768, 768)
+bert.pooler.dense.bias                                        (768,)
+classifier.weight                                           (2, 768)
+classifier.bias                                                 (2,)
+</code></pre></div><h3 id="_4-2-优化器-学习率调度器"><a href="#_4-2-优化器-学习率调度器" class="header-anchor">#</a> 4.2. 优化器 &amp; 学习率调度器</h3> <p>加载了模型后，下一步我们来调节超参数。</p> <p>在微调过程中，BERT 的作者建议使用以下超参 (from Appendix A.3 of the <a href="https://arxiv.org/pdf/1810.04805.pdf" target="_blank" rel="noopener noreferrer">BERT paper<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>):：</p> <blockquote><ul><li>批量大小：16, 32</li> <li>学习率（Adam）：5e-5, 3e-5, 2e-5</li> <li>epochs 的次数：2, 3, 4</li></ul></blockquote> <p>我们的选择如下：</p> <ul><li>Batch size: 32（在构建 DataLoaders 时设置）</li> <li>Learning rate：2e-5</li> <li>Epochs： 4（我们将看到这个值对于本任务来说有点大了）</li></ul> <p>参数 <code>epsilon = 1e-8</code> 是一个非常小的值，他可以避免实现过程中的分母为 0 的情况 (from <a href="http://tinyurl.com/yaempvo5" target="_blank" rel="noopener noreferrer">here<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>)。</p> <p>你可以在 <a href="(http://tinyurl.com/y8pw7b85)"><code>run_glue.py</code></a> 中找到优化器 AdamW 的创建：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 我认为 'W' 代表 '权重衰减修复&quot;</span>
+optimizer <span class="token operator">=</span> AdamW<span class="token punctuation">(</span>model<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                  lr <span class="token operator">=</span> <span class="token number">2e</span><span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token comment"># args.learning_rate - default is 5e-5</span>
+                  eps <span class="token operator">=</span> <span class="token number">1e</span><span class="token operator">-</span><span class="token number">8</span> <span class="token comment"># args.adam_epsilon  - default is 1e-8</span>
+                <span class="token punctuation">)</span>
+</code></pre></div><div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">from</span> transformers <span class="token keyword">import</span> get_linear_schedule_with_warmup
+
+<span class="token comment"># 训练 epochs。 BERT 作者建议在 2 和 4 之间，设大了容易过拟合 </span>
+epochs <span class="token operator">=</span> <span class="token number">4</span>
+
+<span class="token comment"># 总的训练样本数</span>
+total_steps <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>train_dataloader<span class="token punctuation">)</span> <span class="token operator">*</span> epochs
+
+<span class="token comment"># 创建学习率调度器</span>
+scheduler <span class="token operator">=</span> get_linear_schedule_with_warmup<span class="token punctuation">(</span>optimizer<span class="token punctuation">,</span> 
+                                            num_warmup_steps <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> 
+                                            num_training_steps <span class="token operator">=</span> total_steps<span class="token punctuation">)</span>
+</code></pre></div><h3 id="_4-3-训练循环"><a href="#_4-3-训练循环" class="header-anchor">#</a> 4.3. 训练循环</h3> <p>下面是训练循环，有很多代码，但基本上每次循环，均包括训练环节和评估环节。</p> <p>训练：</p> <ul><li>取出输入样本和标签数据</li> <li>加载这些数据到 GPU 中</li> <li>清除上次迭代的梯度计算
+<ul><li>pytorch 中梯度是累加的（在 RNN 中有用），本例中每次迭代前需手动清零</li></ul></li> <li>前向传播</li> <li>反向传播</li> <li>使用优化器来更新参数</li> <li>监控训练过程</li></ul> <p>评估：</p> <ul><li>取出输入样本和标签数据</li> <li>加载这些数据到 GPU 中</li> <li>前向计算</li> <li>计算 loss 并监控整个评估过程</li></ul> <p>定义计算准确率的函数：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+
+<span class="token comment"># 根据预测结果和标签数据来计算准确率</span>
+<span class="token keyword">def</span> <span class="token function">flat_accuracy</span><span class="token punctuation">(</span>preds<span class="token punctuation">,</span> labels<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    pred_flat <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>preds<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    labels_flat <span class="token operator">=</span> labels<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> np<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>pred_flat <span class="token operator">==</span> labels_flat<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token builtin">len</span><span class="token punctuation">(</span>labels_flat<span class="token punctuation">)</span>
+</code></pre></div><p>将训练耗时格式化成 <code>hh:mm:ss</code> 的帮助函数：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> time
+<span class="token keyword">import</span> datetime
+
+<span class="token keyword">def</span> <span class="token function">format_time</span><span class="token punctuation">(</span>elapsed<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">'''
+    Takes a time in seconds and returns a string hh:mm:ss
+    '''</span>
+    <span class="token comment"># 四舍五入到最近的秒</span>
+    elapsed_rounded <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span>elapsed<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    
+    <span class="token comment"># 格式化为 hh:mm:ss</span>
+    <span class="token keyword">return</span> <span class="token builtin">str</span><span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>timedelta<span class="token punctuation">(</span>seconds<span class="token operator">=</span>elapsed_rounded<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre></div><p>全部训练代码：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> random
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+
+<span class="token comment"># 以下训练代码是基于 `run_glue.py` 脚本:</span>
+<span class="token comment"># https://github.com/huggingface/transformers/blob/5bfcd0485ece086ebcbed2d008813037968a9e58/examples/run_glue.py#L128</span>
+
+<span class="token comment"># 设定随机种子值，以确保输出是确定的</span>
+seed_val <span class="token operator">=</span> <span class="token number">42</span>
+
+random<span class="token punctuation">.</span>seed<span class="token punctuation">(</span>seed_val<span class="token punctuation">)</span>
+np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>seed<span class="token punctuation">(</span>seed_val<span class="token punctuation">)</span>
+torch<span class="token punctuation">.</span>manual_seed<span class="token punctuation">(</span>seed_val<span class="token punctuation">)</span>
+torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>manual_seed_all<span class="token punctuation">(</span>seed_val<span class="token punctuation">)</span>
+
+<span class="token comment"># 存储训练和评估的 loss、准确率、训练时长等统计指标, </span>
+training_stats <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token comment"># 统计整个训练时长</span>
+total_t0 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> epoch_i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> epochs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    
+    <span class="token comment"># ========================================</span>
+    <span class="token comment">#               Training</span>
+    <span class="token comment"># ========================================</span>
+    
+
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'======== Epoch {:} / {:} ========'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>epoch_i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> epochs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Training...'</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 统计单次 epoch 的训练时间</span>
+    t0 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 重置每次 epoch 的训练总 loss</span>
+    total_train_loss <span class="token operator">=</span> <span class="token number">0</span>
+
+    <span class="token comment"># 将模型设置为训练模式。这里并不是调用训练接口的意思</span>
+    <span class="token comment"># dropout、batchnorm 层在训练和测试模式下的表现是不同的 (source: https://stackoverflow.com/questions/51433378/what-does-model-train-do-in-pytorch)</span>
+    model<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 训练集小批量迭代</span>
+    <span class="token keyword">for</span> step<span class="token punctuation">,</span> batch <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>train_dataloader<span class="token punctuation">)</span><span class="token punctuation">:</span>
+
+        <span class="token comment"># 每经过40次迭代，就输出进度信息</span>
+        <span class="token keyword">if</span> step <span class="token operator">%</span> <span class="token number">40</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token keyword">and</span> <span class="token keyword">not</span> step <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            elapsed <span class="token operator">=</span> format_time<span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> t0<span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'  Batch {:&gt;5,}  of  {:&gt;5,}.    Elapsed: {:}.'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>step<span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>train_dataloader<span class="token punctuation">)</span><span class="token punctuation">,</span> elapsed<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># 准备输入数据，并将其拷贝到 gpu 中</span>
+        b_input_ids <span class="token operator">=</span> batch<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+        b_input_mask <span class="token operator">=</span> batch<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+        b_labels <span class="token operator">=</span> batch<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+
+        <span class="token comment"># 每次计算梯度前，都需要将梯度清 0，因为 pytorch 的梯度是累加的</span>
+        model<span class="token punctuation">.</span>zero_grad<span class="token punctuation">(</span><span class="token punctuation">)</span>        
+
+        <span class="token comment"># 前向传播</span>
+        <span class="token comment"># 文档参见: </span>
+        <span class="token comment"># https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification</span>
+        <span class="token comment"># 该函数会根据不同的参数，会返回不同的值。 本例中, 会返回 loss 和 logits -- 模型的预测结果</span>
+        loss<span class="token punctuation">,</span> logits <span class="token operator">=</span> model<span class="token punctuation">(</span>b_input_ids<span class="token punctuation">,</span> 
+                             token_type_ids<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> 
+                             attention_mask<span class="token operator">=</span>b_input_mask<span class="token punctuation">,</span> 
+                             labels<span class="token operator">=</span>b_labels<span class="token punctuation">)</span>
+
+        <span class="token comment"># 累加 loss</span>
+        total_train_loss <span class="token operator">+=</span> loss<span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># 反向传播</span>
+        loss<span class="token punctuation">.</span>backward<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># 梯度裁剪，避免出现梯度爆炸情况</span>
+        torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>clip_grad_norm_<span class="token punctuation">(</span>model<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># 更新参数</span>
+        optimizer<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># 更新学习率</span>
+        scheduler<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 平均训练误差</span>
+    avg_train_loss <span class="token operator">=</span> total_train_loss <span class="token operator">/</span> <span class="token builtin">len</span><span class="token punctuation">(</span>train_dataloader<span class="token punctuation">)</span>            
+    
+    <span class="token comment"># 单次 epoch 的训练时长</span>
+    training_time <span class="token operator">=</span> format_time<span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> t0<span class="token punctuation">)</span>
+
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;  Average training loss: {0:.2f}&quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>avg_train_loss<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;  Training epcoh took: {:}&quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>training_time<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        
+    <span class="token comment"># ========================================</span>
+    <span class="token comment">#               Validation</span>
+    <span class="token comment"># ========================================</span>
+    <span class="token comment"># 完成一次 epoch 训练后，就对该模型的性能进行验证</span>
+
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;Running Validation...&quot;</span><span class="token punctuation">)</span>
+
+    t0 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 设置模型为评估模式</span>
+    model<span class="token punctuation">.</span><span class="token builtin">eval</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># Tracking variables </span>
+    total_eval_accuracy <span class="token operator">=</span> <span class="token number">0</span>
+    total_eval_loss <span class="token operator">=</span> <span class="token number">0</span>
+    nb_eval_steps <span class="token operator">=</span> <span class="token number">0</span>
+
+    <span class="token comment"># Evaluate data for one epoch</span>
+    <span class="token keyword">for</span> batch <span class="token keyword">in</span> validation_dataloader<span class="token punctuation">:</span>
+        
+        <span class="token comment"># 将输入数据加载到 gpu 中</span>
+        b_input_ids <span class="token operator">=</span> batch<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+        b_input_mask <span class="token operator">=</span> batch<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+        b_labels <span class="token operator">=</span> batch<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+        
+        <span class="token comment"># 评估的时候不需要更新参数、计算梯度</span>
+        <span class="token keyword">with</span> torch<span class="token punctuation">.</span>no_grad<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>        
+            <span class="token punctuation">(</span>loss<span class="token punctuation">,</span> logits<span class="token punctuation">)</span> <span class="token operator">=</span> model<span class="token punctuation">(</span>b_input_ids<span class="token punctuation">,</span> 
+                                   token_type_ids<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> 
+                                   attention_mask<span class="token operator">=</span>b_input_mask<span class="token punctuation">,</span>
+                                   labels<span class="token operator">=</span>b_labels<span class="token punctuation">)</span>
+            
+        <span class="token comment"># 累加 loss</span>
+        total_eval_loss <span class="token operator">+=</span> loss<span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># 将预测结果和 labels 加载到 cpu 中计算</span>
+        logits <span class="token operator">=</span> logits<span class="token punctuation">.</span>detach<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        label_ids <span class="token operator">=</span> b_labels<span class="token punctuation">.</span>to<span class="token punctuation">(</span><span class="token string">'cpu'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># 计算准确率</span>
+        total_eval_accuracy <span class="token operator">+=</span> flat_accuracy<span class="token punctuation">(</span>logits<span class="token punctuation">,</span> label_ids<span class="token punctuation">)</span>
+        
+
+    <span class="token comment"># 打印本次 epoch 的准确率</span>
+    avg_val_accuracy <span class="token operator">=</span> total_eval_accuracy <span class="token operator">/</span> <span class="token builtin">len</span><span class="token punctuation">(</span>validation_dataloader<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;  Accuracy: {0:.2f}&quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>avg_val_accuracy<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 统计本次 epoch 的 loss</span>
+    avg_val_loss <span class="token operator">=</span> total_eval_loss <span class="token operator">/</span> <span class="token builtin">len</span><span class="token punctuation">(</span>validation_dataloader<span class="token punctuation">)</span>
+    
+    <span class="token comment"># 统计本次评估的时长</span>
+    validation_time <span class="token operator">=</span> format_time<span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> t0<span class="token punctuation">)</span>
+    
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;  Validation Loss: {0:.2f}&quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>avg_val_loss<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;  Validation took: {:}&quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>validation_time<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 记录本次 epoch 的所有统计信息</span>
+    training_stats<span class="token punctuation">.</span>append<span class="token punctuation">(</span>
+        <span class="token punctuation">{</span>
+            <span class="token string">'epoch'</span><span class="token punctuation">:</span> epoch_i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token string">'Training Loss'</span><span class="token punctuation">:</span> avg_train_loss<span class="token punctuation">,</span>
+            <span class="token string">'Valid. Loss'</span><span class="token punctuation">:</span> avg_val_loss<span class="token punctuation">,</span>
+            <span class="token string">'Valid. Accur.'</span><span class="token punctuation">:</span> avg_val_accuracy<span class="token punctuation">,</span>
+            <span class="token string">'Training Time'</span><span class="token punctuation">:</span> training_time<span class="token punctuation">,</span>
+            <span class="token string">'Validation Time'</span><span class="token punctuation">:</span> validation_time
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;&quot;</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;Training complete!&quot;</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;Total training took {:} (h:mm:ss)&quot;</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>format_time<span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span>total_t0<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre></div><p>我们一起来看一下整个训练的概要：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+
+<span class="token comment"># 保留 2 位小数</span>
+pd<span class="token punctuation">.</span>set_option<span class="token punctuation">(</span><span class="token string">'precision'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 加载训练统计到 DataFrame 中</span>
+df_stats <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>data<span class="token operator">=</span>training_stats<span class="token punctuation">)</span>
+
+<span class="token comment"># 使用 epoch 值作为每行的索引</span>
+df_stats <span class="token operator">=</span> df_stats<span class="token punctuation">.</span>set_index<span class="token punctuation">(</span><span class="token string">'epoch'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 展示表格数据</span>
+df_stats
+</code></pre></div><table><thead><tr><th style="text-align:left;">epoch</th> <th style="text-align:right;">Training Loss</th> <th style="text-align:right;">Valid. Loss</th> <th style="text-align:right;">Valid. Accur.</th> <th style="text-align:right;">Training Time</th> <th style="text-align:right;">Validation Time</th></tr></thead> <tbody><tr><td style="text-align:left;">1</td> <td style="text-align:right;">0.50</td> <td style="text-align:right;">0.45</td> <td style="text-align:right;">0.80</td> <td style="text-align:right;">0:00:51</td> <td style="text-align:right;">0:00:02</td></tr> <tr><td style="text-align:left;">2</td> <td style="text-align:right;">0.32</td> <td style="text-align:right;">0.46</td> <td style="text-align:right;">0.81</td> <td style="text-align:right;">0:00:51</td> <td style="text-align:right;">0:00:02</td></tr> <tr><td style="text-align:left;">3</td> <td style="text-align:right;">0.22</td> <td style="text-align:right;">0.49</td> <td style="text-align:right;">0.82</td> <td style="text-align:right;">0:00:51</td> <td style="text-align:right;">0:00:02</td></tr> <tr><td style="text-align:left;">4</td> <td style="text-align:right;">0.16</td> <td style="text-align:right;">0.55</td> <td style="text-align:right;">0.82</td> <td style="text-align:right;">0:00:51</td> <td style="text-align:right;">0:00:02</td></tr></tbody></table> <p>注意到，每次 epoch，训练误差都会降低，而验证误差却在上升！这意味着我们的训练模型的时间过长了，即模型过拟合了。</p> <p>在评估过程中，验证集误差相对于准确率来说更为精细，因为准确率并不关心具体的输出值，而仅仅考虑给定一个阈值，样本会落在哪个分类上。</p> <p>当我们预测正确，但信心依然不足时，可以使用验证误差来评估，而准确率却做不到这一点，对比每次 epoch 的训练误差和验证误差：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token operator">%</span> matplotlib inline
+
+<span class="token keyword">import</span> seaborn <span class="token keyword">as</span> sns
+
+<span class="token comment"># 绘图风格设置</span>
+sns<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>style<span class="token operator">=</span><span class="token string">'darkgrid'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Increase the plot size and font size.</span>
+sns<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>font_scale<span class="token operator">=</span><span class="token number">1.5</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>rcParams<span class="token punctuation">[</span><span class="token string">&quot;figure.figsize&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 绘制学习曲线</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>df_stats<span class="token punctuation">[</span><span class="token string">'Training Loss'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">'b-o'</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">&quot;Training&quot;</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>df_stats<span class="token punctuation">[</span><span class="token string">'Valid. Loss'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">'g-o'</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">&quot;Validation&quot;</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Label the plot.</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Training &amp; Validation Loss&quot;</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">&quot;Epoch&quot;</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&quot;Loss&quot;</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>legend<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xticks<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre></div><p><img src="https://github.com/jieniu/articles/blob/master/docs/.vuepress/public/learning_curve_w_validation_loss.png?raw=true" alt="Learning Curve - Training &amp; Validation Loss"></p> <h2 id="_5-在测试集上测试性能"><a href="#_5-在测试集上测试性能" class="header-anchor">#</a> 5. 在测试集上测试性能</h2> <p>下面我们加载测试集，并使用 <a href="http://tinyurl.com/y6h3m6fk" target="_blank" rel="noopener noreferrer">Matthew相关系数<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>来评估模型性能，因为这是一种在 NLP 社区中被广泛使用的衡量 CoLA 任务性能的方法。使用这种测量方法，+1 为最高分，-1 为最低分。于是，我们就可以在特定任务上，横向和最好的模型进行性能对比了。</p> <h3 id="_5-1-数据准备"><a href="#_5-1-数据准备" class="header-anchor">#</a> 5.1. 数据准备</h3> <p>对测试集的处理，和处理训练数据集的步骤是一致的，如下</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+
+<span class="token comment"># 加载数据集</span>
+df <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">&quot;./cola_public/raw/out_of_domain_dev.tsv&quot;</span><span class="token punctuation">,</span> delimiter<span class="token operator">=</span><span class="token string">'\t'</span><span class="token punctuation">,</span> header<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'sentence_source'</span><span class="token punctuation">,</span> <span class="token string">'label'</span><span class="token punctuation">,</span> <span class="token string">'label_notes'</span><span class="token punctuation">,</span> <span class="token string">'sentence'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 打印数据集大小</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Number of test sentences: {:,}\n'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>df<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># 将数据集转换为列表</span>
+sentences <span class="token operator">=</span> df<span class="token punctuation">.</span>sentence<span class="token punctuation">.</span>values
+labels <span class="token operator">=</span> df<span class="token punctuation">.</span>label<span class="token punctuation">.</span>values
+
+<span class="token comment"># 分词、填充或截断</span>
+input_ids <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+attention_masks <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> sent <span class="token keyword">in</span> sentences<span class="token punctuation">:</span>
+    encoded_dict <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>encode_plus<span class="token punctuation">(</span>
+                        sent<span class="token punctuation">,</span>                      
+                        add_special_tokens <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">,</span> 
+                        max_length <span class="token operator">=</span> <span class="token number">64</span><span class="token punctuation">,</span>           
+                        pad_to_max_length <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">,</span>
+                        return_attention_mask <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">,</span>   
+                        return_tensors <span class="token operator">=</span> <span class="token string">'pt'</span><span class="token punctuation">,</span>     
+                   <span class="token punctuation">)</span>
+    input_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span>encoded_dict<span class="token punctuation">[</span><span class="token string">'input_ids'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    attention_masks<span class="token punctuation">.</span>append<span class="token punctuation">(</span>encoded_dict<span class="token punctuation">[</span><span class="token string">'attention_mask'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+input_ids <span class="token operator">=</span> torch<span class="token punctuation">.</span>cat<span class="token punctuation">(</span>input_ids<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+attention_masks <span class="token operator">=</span> torch<span class="token punctuation">.</span>cat<span class="token punctuation">(</span>attention_masks<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+labels <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>labels<span class="token punctuation">)</span>
+
+batch_size <span class="token operator">=</span> <span class="token number">32</span>  
+
+<span class="token comment"># 准备好数据集</span>
+prediction_data <span class="token operator">=</span> TensorDataset<span class="token punctuation">(</span>input_ids<span class="token punctuation">,</span> attention_masks<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
+prediction_sampler <span class="token operator">=</span> SequentialSampler<span class="token punctuation">(</span>prediction_data<span class="token punctuation">)</span>
+prediction_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>prediction_data<span class="token punctuation">,</span> sampler<span class="token operator">=</span>prediction_sampler<span class="token punctuation">,</span> batch_size<span class="token operator">=</span>batch_size<span class="token punctuation">)</span>
+</code></pre></div><h3 id="_5-2-评估测试集性能"><a href="#_5-2-评估测试集性能" class="header-anchor">#</a> 5.2. 评估测试集性能</h3> <p>准备好测试集数据后，就可以用之前微调的模型来对测试集进行预测了</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 预测测试集</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Predicting labels for {:,} test sentences...'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>input_ids<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># 依然是评估模式</span>
+model<span class="token punctuation">.</span><span class="token builtin">eval</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Tracking variables </span>
+predictions <span class="token punctuation">,</span> true_labels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token comment"># 预测</span>
+<span class="token keyword">for</span> batch <span class="token keyword">in</span> prediction_dataloader<span class="token punctuation">:</span>
+  <span class="token comment"># 将数据加载到 gpu 中</span>
+  batch <span class="token operator">=</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span> <span class="token keyword">for</span> t <span class="token keyword">in</span> batch<span class="token punctuation">)</span>
+  b_input_ids<span class="token punctuation">,</span> b_input_mask<span class="token punctuation">,</span> b_labels <span class="token operator">=</span> batch
+  
+  <span class="token comment"># 不需要计算梯度</span>
+  <span class="token keyword">with</span> torch<span class="token punctuation">.</span>no_grad<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token comment"># 前向传播，获取预测结果</span>
+      outputs <span class="token operator">=</span> model<span class="token punctuation">(</span>b_input_ids<span class="token punctuation">,</span> token_type_ids<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> 
+                      attention_mask<span class="token operator">=</span>b_input_mask<span class="token punctuation">)</span>
+
+  logits <span class="token operator">=</span> outputs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+
+  <span class="token comment"># 将结果加载到 cpu 中</span>
+  logits <span class="token operator">=</span> logits<span class="token punctuation">.</span>detach<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  label_ids <span class="token operator">=</span> b_labels<span class="token punctuation">.</span>to<span class="token punctuation">(</span><span class="token string">'cpu'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  
+  <span class="token comment"># 存储预测结果和 labels</span>
+  predictions<span class="token punctuation">.</span>append<span class="token punctuation">(</span>logits<span class="token punctuation">)</span>
+  true_labels<span class="token punctuation">.</span>append<span class="token punctuation">(</span>label_ids<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'    DONE.'</span><span class="token punctuation">)</span>
+</code></pre></div><p>使用 Mathews 相关性系数（MCC）来评估测试集性能，原因在于类别的分布是不均匀的：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Positive samples: %d of %d (%.2f%%)'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>df<span class="token punctuation">.</span>label<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>df<span class="token punctuation">.</span>label<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>df<span class="token punctuation">.</span>label<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token builtin">len</span><span class="token punctuation">(</span>df<span class="token punctuation">.</span>label<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100.0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
+Positive samples<span class="token punctuation">:</span> <span class="token number">354</span> of <span class="token number">516</span> <span class="token punctuation">(</span><span class="token number">68.60</span><span class="token operator">%</span><span class="token punctuation">)</span>  
+</code></pre></div><p>最终评测结果会基于全量的测试数据，不过我们可以统计每个小批量各自的分数，以查看批量之间的变化。</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>metrics <span class="token keyword">import</span> matthews_corrcoef
+
+matthews_set <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token comment"># 计算每个 batch 的 MCC</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Calculating Matthews Corr. Coef. for each batch...'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># For each input batch...</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>true_labels<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  pred_labels_i <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>predictions<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  
+  <span class="token comment"># 计算该 batch 的 MCC  </span>
+  matthews <span class="token operator">=</span> matthews_corrcoef<span class="token punctuation">(</span>true_labels<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> pred_labels_i<span class="token punctuation">)</span>                
+  matthews_set<span class="token punctuation">.</span>append<span class="token punctuation">(</span>matthews<span class="token punctuation">)</span>
+</code></pre></div><div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 创建柱状图来显示每个 batch 的 MCC 分数</span>
+ax <span class="token operator">=</span> sns<span class="token punctuation">.</span>barplot<span class="token punctuation">(</span>x<span class="token operator">=</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>matthews_set<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> y<span class="token operator">=</span>matthews_set<span class="token punctuation">,</span> ci<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span>
+
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">'MCC Score per Batch'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">'MCC Score (-1 to +1)'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'Batch #'</span><span class="token punctuation">)</span>
+
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre></div><p><img src="https://github.com/jieniu/articles/blob/master/docs/.vuepress/public/mcc_score_by_batch.png?raw=true" alt="png"></p> <p>我们将所有批量的结果合并，来计算最终的 MCC 分：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 合并所有 batch 的预测结果</span>
+flat_predictions <span class="token operator">=</span> np<span class="token punctuation">.</span>concatenate<span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 取每个样本的最大值作为预测值</span>
+flat_predictions <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>flat_predictions<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 合并所有的 labels</span>
+flat_true_labels <span class="token operator">=</span> np<span class="token punctuation">.</span>concatenate<span class="token punctuation">(</span>true_labels<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 计算 MCC</span>
+mcc <span class="token operator">=</span> matthews_corrcoef<span class="token punctuation">(</span>flat_true_labels<span class="token punctuation">,</span> flat_predictions<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Total MCC: %.3f'</span> <span class="token operator">%</span> mcc<span class="token punctuation">)</span>
+
+<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
+Total MCC<span class="token punctuation">:</span> <span class="token number">0.498</span>
+</code></pre></div><p>Cool！只用了半个小时，在没有调整任何超参数的情况下（调整学习率、epochs、批量大小、ADAM 属性等），我们却得到了一个还不赖的分数。</p> <p>库文档期望的准确率 benchmark <a href="http://tinyurl.com/y9bpn42m" target="_blank" rel="noopener noreferrer">在此查看<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>。你也可以在<a href="http://tinyurl.com/yan8etcw" target="_blank" rel="noopener noreferrer">这里<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>查看官方的排行榜。</p> <h2 id="总结"><a href="#总结" class="header-anchor">#</a> 总结</h2> <p>本教程主要描述了在预训练 BERT 模型的基础上，你可以使用较少数据和训练时间，快速且高效的创建一个高质量的 NLP 模型。</p> <h2 id="附录"><a href="#附录" class="header-anchor">#</a> 附录</h2> <h3 id="a-1-存储-加载微调的模型"><a href="#a-1-存储-加载微调的模型" class="header-anchor">#</a> A.1. 存储 &amp; 加载微调的模型</h3> <p>下面的代码（源自 <code>run_glue.py</code>）将模型和分词器写到磁盘上</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> os
+
+<span class="token comment"># 模型存储到的路径</span>
+output_dir <span class="token operator">=</span> <span class="token string">'./model_save/'</span>
+
+<span class="token comment"># 目录不存在则创建</span>
+<span class="token keyword">if</span> <span class="token keyword">not</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span>output_dir<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    os<span class="token punctuation">.</span>makedirs<span class="token punctuation">(</span>output_dir<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;Saving model to %s&quot;</span> <span class="token operator">%</span> output_dir<span class="token punctuation">)</span>
+
+<span class="token comment"># 使用 `save_pretrained()` 来保存已训练的模型，模型配置和分词器</span>
+<span class="token comment"># 它们后续可以通过 `from_pretrained()` 加载</span>
+model_to_save <span class="token operator">=</span> model<span class="token punctuation">.</span>module <span class="token keyword">if</span> <span class="token builtin">hasattr</span><span class="token punctuation">(</span>model<span class="token punctuation">,</span> <span class="token string">'module'</span><span class="token punctuation">)</span> <span class="token keyword">else</span> model  <span class="token comment"># 考虑到分布式/并行（distributed/parallel）训练</span>
+model_to_save<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span>output_dir<span class="token punctuation">)</span>
+tokenizer<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span>output_dir<span class="token punctuation">)</span>
+
+<span class="token comment"># Good practice: save your training arguments together with the trained model</span>
+<span class="token comment"># torch.save(args, os.path.join(output_dir, 'training_args.bin'))</span>
+
+</code></pre></div><p>将 Colab Notebook 中的模型存储到 Google Drive 上</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 挂载 Google Drive</span>
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>colab <span class="token keyword">import</span> drive
+drive<span class="token punctuation">.</span>mount<span class="token punctuation">(</span><span class="token string">'/content/drive'</span><span class="token punctuation">)</span>
+<span class="token comment"># 拷贝模型文件到 Google Drive</span>
+!cp <span class="token operator">-</span>r <span class="token punctuation">.</span><span class="token operator">/</span>model_save<span class="token operator">/</span> <span class="token string">&quot;./drive/Shared drives/AI/BERT Fine-Tuning/&quot;</span>
+</code></pre></div><p>下面的代码将从磁盘上加载模型</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 加载微调后的模型的词汇表</span>
+model <span class="token operator">=</span> model_class<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>output_dir<span class="token punctuation">)</span>
+tokenizer <span class="token operator">=</span> tokenizer_class<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>output_dir<span class="token punctuation">)</span>
+
+<span class="token comment"># 将模型 copy 到 GPU/CPU 中运行</span>
+model<span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+</code></pre></div><h3 id="a-2-权重衰减"><a href="#a-2-权重衰减" class="header-anchor">#</a> A.2. 权重衰减</h3> <p>huggingface 的例子中包含以下代码来设置权重衰减（weight decay），但默认的衰减率为 &quot;0&quot;，所以我把这部分代码移到了附录中。</p> <p>这个代码段本质上告诉优化器不在 bias 参数上运用权重衰减，权重衰减实际上是一种在计算梯度后的正则化。</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># 代码来源于:</span>
+<span class="token comment"># https://github.com/huggingface/transformers/blob/5bfcd0485ece086ebcbed2d008813037968a9e58/examples/run_glue.py#L102</span>
+
+<span class="token comment"># 不在包含以下字符串的参数名对应的参数上运用权重衰减</span>
+<span class="token comment"># (Here, the BERT doesn't have `gamma` or `beta` parameters, only `bias` terms)</span>
+no_decay <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'bias'</span><span class="token punctuation">,</span> <span class="token string">'LayerNorm.weight'</span><span class="token punctuation">]</span>
+
+<span class="token comment"># 将`weight`参数和`bias`参数分开 </span>
+<span class="token comment"># - 对于`weight`参数, 'weight_decay_rate'设为 0.01</span>
+<span class="token comment"># - 对于`bias`参数, 'weight_decay_rate'设为 0.0</span>
+optimizer_grouped_parameters <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token comment"># Filter for all parameters which *don't* include 'bias', 'gamma', 'beta'.</span>
+    <span class="token punctuation">{</span><span class="token string">'params'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>p <span class="token keyword">for</span> n<span class="token punctuation">,</span> p <span class="token keyword">in</span> param_optimizer <span class="token keyword">if</span> <span class="token keyword">not</span> <span class="token builtin">any</span><span class="token punctuation">(</span>nd <span class="token keyword">in</span> n <span class="token keyword">for</span> nd <span class="token keyword">in</span> no_decay<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token string">'weight_decay_rate'</span><span class="token punctuation">:</span> <span class="token number">0.1</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    
+    <span class="token comment"># Filter for parameters which *do* include those.</span>
+    <span class="token punctuation">{</span><span class="token string">'params'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>p <span class="token keyword">for</span> n<span class="token punctuation">,</span> p <span class="token keyword">in</span> param_optimizer <span class="token keyword">if</span> <span class="token builtin">any</span><span class="token punctuation">(</span>nd <span class="token keyword">in</span> n <span class="token keyword">for</span> nd <span class="token keyword">in</span> no_decay<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token string">'weight_decay_rate'</span><span class="token punctuation">:</span> <span class="token number">0.0</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token comment"># 注意 - `optimizer_grouped_parameters` 仅包含参数值，不包含参数名</span>
+</code></pre></div><p>译者注：经验证，以上代码均可在 Google Colab 上运行，链接如下：https://colab.research.google.com/drive/1sfAypJA0r8DEaDmTGWD8FCrvpQZ33TVl?usp=sharing</p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/jieniu/articles/edit/master/docs/AI/bert-fine-tune.md" target="_blank" rel="noopener noreferrer">在 Github 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">上次更新:</span> <span class="time">6/8/2020, 9:46:33 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.df58ad8f.js" defer></script><script src="/assets/js/2.61eaf15d.js" defer></script><script src="/assets/js/10.f87ecc1f.js" defer></script>
+  </body>
+</html>

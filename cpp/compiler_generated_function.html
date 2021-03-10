@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>编译器产生的默认成员函数（Compiler Generated Functions） | 程序员在深圳</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
+    <meta name="description" content="一个程序员的工作学习日志">
+    
+    <link rel="preload" href="/assets/css/0.styles.f5338f93.css" as="style"><link rel="preload" href="/assets/js/app.df58ad8f.js" as="script"><link rel="preload" href="/assets/js/2.61eaf15d.js" as="script"><link rel="preload" href="/assets/js/35.138d4346.js" as="script"><link rel="prefetch" href="/assets/js/10.f87ecc1f.js"><link rel="prefetch" href="/assets/js/11.54366349.js"><link rel="prefetch" href="/assets/js/12.67a0f6b0.js"><link rel="prefetch" href="/assets/js/13.99b5efa8.js"><link rel="prefetch" href="/assets/js/14.d6c4161c.js"><link rel="prefetch" href="/assets/js/15.86108684.js"><link rel="prefetch" href="/assets/js/16.010195ae.js"><link rel="prefetch" href="/assets/js/17.ce5baee3.js"><link rel="prefetch" href="/assets/js/18.aadd0b94.js"><link rel="prefetch" href="/assets/js/19.572b0672.js"><link rel="prefetch" href="/assets/js/20.b6be1672.js"><link rel="prefetch" href="/assets/js/21.cd98384f.js"><link rel="prefetch" href="/assets/js/22.102317c8.js"><link rel="prefetch" href="/assets/js/23.a0861652.js"><link rel="prefetch" href="/assets/js/24.bf902e0e.js"><link rel="prefetch" href="/assets/js/25.07e70736.js"><link rel="prefetch" href="/assets/js/26.3217ccfc.js"><link rel="prefetch" href="/assets/js/27.234cd32e.js"><link rel="prefetch" href="/assets/js/28.7c7054a6.js"><link rel="prefetch" href="/assets/js/29.f9081eeb.js"><link rel="prefetch" href="/assets/js/3.b3b53faa.js"><link rel="prefetch" href="/assets/js/30.8e61b67c.js"><link rel="prefetch" href="/assets/js/31.6c587718.js"><link rel="prefetch" href="/assets/js/32.dc610c44.js"><link rel="prefetch" href="/assets/js/33.dcbd6e39.js"><link rel="prefetch" href="/assets/js/34.ae1fd795.js"><link rel="prefetch" href="/assets/js/36.d31f5a6a.js"><link rel="prefetch" href="/assets/js/37.a3169296.js"><link rel="prefetch" href="/assets/js/38.aca3097a.js"><link rel="prefetch" href="/assets/js/39.c0de7ac0.js"><link rel="prefetch" href="/assets/js/4.e59358e7.js"><link rel="prefetch" href="/assets/js/40.5d68e63a.js"><link rel="prefetch" href="/assets/js/41.3dca7ff0.js"><link rel="prefetch" href="/assets/js/42.315116b4.js"><link rel="prefetch" href="/assets/js/43.cef3d9f5.js"><link rel="prefetch" href="/assets/js/44.88ac8ba1.js"><link rel="prefetch" href="/assets/js/45.73ffc9a4.js"><link rel="prefetch" href="/assets/js/46.04780877.js"><link rel="prefetch" href="/assets/js/47.f20a8844.js"><link rel="prefetch" href="/assets/js/48.e649e8cd.js"><link rel="prefetch" href="/assets/js/49.8a3b5784.js"><link rel="prefetch" href="/assets/js/5.1b393789.js"><link rel="prefetch" href="/assets/js/50.1a49c4ab.js"><link rel="prefetch" href="/assets/js/51.cbf7b21b.js"><link rel="prefetch" href="/assets/js/52.7788643e.js"><link rel="prefetch" href="/assets/js/53.e05e9f77.js"><link rel="prefetch" href="/assets/js/54.afd8b938.js"><link rel="prefetch" href="/assets/js/55.563d7429.js"><link rel="prefetch" href="/assets/js/56.b7fa3e85.js"><link rel="prefetch" href="/assets/js/57.f1a89935.js"><link rel="prefetch" href="/assets/js/58.15388447.js"><link rel="prefetch" href="/assets/js/59.372e5f15.js"><link rel="prefetch" href="/assets/js/6.b798fcf5.js"><link rel="prefetch" href="/assets/js/60.a488faa3.js"><link rel="prefetch" href="/assets/js/61.76dadce9.js"><link rel="prefetch" href="/assets/js/62.21c77b63.js"><link rel="prefetch" href="/assets/js/63.5e49c47d.js"><link rel="prefetch" href="/assets/js/64.453510d9.js"><link rel="prefetch" href="/assets/js/65.993d90cc.js"><link rel="prefetch" href="/assets/js/66.4cab5d50.js"><link rel="prefetch" href="/assets/js/67.868bf75e.js"><link rel="prefetch" href="/assets/js/68.89613fc8.js"><link rel="prefetch" href="/assets/js/69.779e7f70.js"><link rel="prefetch" href="/assets/js/7.cb2f8a10.js"><link rel="prefetch" href="/assets/js/70.6b66c1a9.js"><link rel="prefetch" href="/assets/js/71.9783ef6a.js"><link rel="prefetch" href="/assets/js/72.5e7137bc.js"><link rel="prefetch" href="/assets/js/73.9fcb00bc.js"><link rel="prefetch" href="/assets/js/74.3a440a9c.js"><link rel="prefetch" href="/assets/js/8.01f6304b.js"><link rel="prefetch" href="/assets/js/9.e15aa5e8.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.f5338f93.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">程序员在深圳</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/cpp/" class="nav-link router-link-active">
+  C++
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/AI/" class="nav-link">
+  AI
+</a></div><div class="nav-item"><a href="/math/" class="nav-link">
+  math
+</a></div><div class="nav-item"><a href="/mysql_notes/" class="nav-link">
+  mysql
+</a></div><div class="nav-item"><a href="/tools/" class="nav-link">
+  tools
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="LeetCode" class="dropdown-title"><span class="title">LeetCode</span> <span class="arrow down"></span></button> <button type="button" aria-label="LeetCode" class="mobile-dropdown-title"><span class="title">LeetCode</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/leetcode/" class="nav-link">
+  articles
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/jieniu/LeetCode.git" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MyLeeCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/jieniu/articles" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/cpp/" class="nav-link router-link-active">
+  C++
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/AI/" class="nav-link">
+  AI
+</a></div><div class="nav-item"><a href="/math/" class="nav-link">
+  math
+</a></div><div class="nav-item"><a href="/mysql_notes/" class="nav-link">
+  mysql
+</a></div><div class="nav-item"><a href="/tools/" class="nav-link">
+  tools
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="LeetCode" class="dropdown-title"><span class="title">LeetCode</span> <span class="arrow down"></span></button> <button type="button" aria-label="LeetCode" class="mobile-dropdown-title"><span class="title">LeetCode</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/leetcode/" class="nav-link">
+  articles
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/jieniu/LeetCode.git" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MyLeeCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/jieniu/articles" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="编译器产生的默认成员函数-compiler-generated-functions"><a href="#编译器产生的默认成员函数-compiler-generated-functions" class="header-anchor">#</a> 编译器产生的默认成员函数（Compiler Generated Functions）</h1> <p>在 C++03 中，定义以下类，</p> <div class="language- extra-class"><pre class="language-text"><code>class Dog {};
+</code></pre></div><p>编译器会给你产生 4 个默认的成员函数：</p> <ol><li>复制构造函数（Copy constructor）</li> <li>赋值操作符（Copy Assignment Operator）</li> <li>析构函数（Destructor）</li> <li>默认构造函数（Default constructor），注意：<strong>默认构造函数只有在你没有声明任何构造函数的情况下才产生</strong></li></ol> <p>上面的代码和下面的代码等价</p> <div class="language- extra-class"><pre class="language-text"><code>Class Dog {
+public:
+	Dog(const Dog&amp; rhs) {...}; 				// 挨个成员初始化
+	Dog&amp; operator=(const Dog&amp; rhs) {...}; 	 // 挨个成员拷贝
+	Dog() {...}; 		// 1. 调用基类的构造函数
+					   // 2. 调用成员的默认构造函数
+	~Dog() {...}; 	    // 1. 调用基类的析构函数;
+				 	   // 2. 调用成员的析构函数;
+};
+</code></pre></div><p>以上代码产生时，有两点需要注意</p> <ol><li>编译器产生的默认函数都是 <code>public</code>、 <code>inline</code> 的</li> <li>只有在需要的时候，编译器才会产生它们</li></ol> <p>上面提到了默认构造函数这个概念，我们先来回顾一下，什么是默认构造函数，它的特征是<strong>默认构造函数可以在没有任何参数的情况下使用</strong>，这里有个例子需要记一下：如果构造函数的所有参数都有默认参数，那么这个构造函数也可以作为默认构造函数使用。</p> <p>C++ 中的容器是经常被用到的模板类库，<strong>使用容器的类需要具备两个条件：支持复制操作和赋值构造</strong>，即它应包含复制操作符和赋值构造函数，而如果类中又包含引用类型的成员，或 <code>const</code> 成员，由于这些成员无法被复制，所以这些类对象无法使用容器。</p> <p>既然是规则，那一定有它无法生效的情况：</p> <ol><li><p>什么情况下编译器无法创建默认构造函数？</p> <p>如果类定义了构造函数，且该构造函数带参（不是默认构造函数）；如果成员或基类无法创建默认构造函数，或没有默认构造函数。</p></li> <li><p>什么情况下编译器无法创建赋值操作符？</p> <p>类中含有 <code>const</code> 或引用类型的成员</p></li> <li><p>什么情况下编译器无法创建析构函数？</p> <p>如果基类的析构函数在 <code>private</code> 中</p></li></ol> <p>例子：以下代码有什么问题？</p> <div class="language- extra-class"><pre class="language-text"><code>class Dog {
+    string&amp; name_;
+};
+
+int main() {
+    Dog dog; 
+}
+</code></pre></div><p>编译错误：</p> <div class="language- extra-class"><pre class="language-text"><code>error: implicit default constructor for 'Dog' must explicitly initialize the reference member
+</code></pre></div><p>因为默认构造函数在构造 <code>name_</code> 时，只能构造，而无法初始化，<strong>而 C++ 要求引用被初始化，因为引用无法被重复赋值。</strong></p> <p>C++11 引入了 <code>default</code> 关键字，它可以显示的告知编译器，为此类产生默认的成员函数，例如它和默认构造函数一起使用，作用是：即便定义了其他有参构造函数，仍然让编译器为此类产生一个默认构造函数，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>class Dog {
+public:
+	Dog() = default; 
+	Dog(string name) {...}
+};
+int main() {
+    Dog dog;
+}
+
+----
+g++ -std=c++11 -c dog.cc // it's ok
+</code></pre></div><p>总结一下：本文介绍了</p> <ol><li>在 C++03 中，编译器会为类产生哪些默认的成员函数</li> <li>所有参数都有默认参数的构造函数也是默认构造函数</li> <li>要使用容器，类需要具备可复制和可赋值构造两个特性</li> <li>如果类中有 <code>const</code> 成员和引用类型的成员，则该类无法赋值和赋值构造</li> <li>如果基类中的析构函数在 <code>private</code> 中，则编译器不会给子类产生默认析构函数</li> <li>如果你定义了其他带参构造函数，则编译器不会给你产生默认构造函数，除非你使用 C++11 中的 <code>default</code> 关键字</li></ol> <p>参考：</p> <ul><li><a href="https://www.youtube.com/watch?v=KMSYmY74AEs&amp;t=250s" target="_blank" rel="noopener noreferrer">Advanced C++: Compiler Generated Functions<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/jieniu/articles/edit/master/docs/cpp/compiler_generated_function.md" target="_blank" rel="noopener noreferrer">在 Github 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">上次更新:</span> <span class="time">6/16/2019, 11:09:03 AM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.df58ad8f.js" defer></script><script src="/assets/js/2.61eaf15d.js" defer></script><script src="/assets/js/35.138d4346.js" defer></script>
+  </body>
+</html>
